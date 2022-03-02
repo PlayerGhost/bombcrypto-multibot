@@ -4,7 +4,7 @@ instruction = '''
 >>---> https://github.com/rzanca/bombcrypto-multibot/
 
 >>---> Curtiu? Faça sua doação... Wallet BEP20
->>---> 0x0F134Cb0F31bc83780f3e5546598f4b25856A64f
+>>---> 0xe8dB3a73A24ba73131d1Dc7d5667198E5Af586a3
 
 >>---> Pressione ctrl + c ou feche o prompt para parar o BOT.
 
