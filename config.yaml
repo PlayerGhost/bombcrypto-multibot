@@ -1,13 +1,36 @@
 ---
+#Nome dos perfis de cada conta
+#Os valores devem ser crescentes de 1 até o número total das suas contas
+accountLabels:
+  1: ""
+  2: "B2"
+  3: ""
+
 # Configurações de conexão para Telegram
 # multi = True, se quiser que envie mensagem para mais de um Telegram
 telegram:
-  active: False
-  multi: False
-  tokenOwner: ""
-  chatidOwner: ""
-  tokenScholar: ""
-  chatidScholar: ""
+  active: True
+  multi: True
+  tokenMain: "5089244154:AAEP-Qh1A-5V5gIUXW2rRwnCb1SF6baU2cY"
+  chatidMain: "187580439"
+
+  # Multiaccounts
+  # Os valores devem ser crescentes de 1 até o número total das suas contas
+  # Inclua o token e chatid de cada conta do jeito que está neste exemplo
+  # Inclua o token e chatid de cada conta do jeito que está neste exemplo
+  secondaryInfos:
+    1:
+      token: ""
+      chatid: ""
+      profilesToSendMessage: [1, 2, 3]
+    2:
+      token: "5248283321:AAHxWBwquuBld77RHus2hpNOMPBgQ0W1HdE"
+      chatid: "5244463023"
+      profilesToSendMessage: [2]
+    3:
+      token: "5248283321:AAHxWBwquuBld77RHus2hpNOMPBgQ0W1HdE"
+      chatid: "5244463023"
+      profilesToSendMessage: []
 
 # Configurações de intervalos de tempo
 time_intervals:
