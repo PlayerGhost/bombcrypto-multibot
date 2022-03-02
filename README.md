@@ -1,10 +1,12 @@
 # BOT - MultiContas para BombCrypto - v 0.5.1
 
 ## Funções extras:
-- Envios de notificações via Telegram para duas contas, podendo ser do dono da conta e de um Scholar:
+- Envios de notificações via Telegram para duas contas, podendo ser para o dono da conta e/ou um scholar:
     - Aviso de Inicialização do Bot
     - Aviso de Conclusão de Mapa
     - Saldo em BCOINS
+    - Nome nas conta
+    - Envio de mensagens de contas especificas, para Telegrams especificos(serve para que um scholar não envie o saldo de outras contas para o dono de uma conta)
 - Login com email e senha em multiplas contas
 - Reinicio automático em caso de falha na execução
 - Identificação e Controle Automático das Janelas do BombCrypto
