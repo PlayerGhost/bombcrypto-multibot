@@ -1,9 +1,13 @@
 ---
 # Configurações de conexão para Telegram
+# multi = True, se quiser que envie mensagem para mais de um Telegram
 telegram:
   active: False
-  token: ""
-  chatid: ""
+  multi: False
+  tokenOwner: ""
+  chatidOwner: ""
+  tokenScholar: ""
+  chatidScholar: ""
 
 # Configurações de intervalos de tempo
 time_intervals:
