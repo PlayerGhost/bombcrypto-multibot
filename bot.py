@@ -4,11 +4,11 @@ import os
 from cv2 import cv2
 from os import listdir
 from random import random, randint
+import pyautogui
 from datetime import datetime
 
 from src.logger import logger, loggerMapClicked
 from configuration import Configuration
-from autoui import AutoUI
 from telegram_bot import Telegram
 from screen_controls import ScreenControls
 from instructions import instruction
@@ -17,6 +17,12 @@ from instructions import instruction
 class Bot:
 
     def __init__(self):
+        pyautogui.PAUSE = Configuration.c['time_intervals']['interval_between_movements']
+        pyautogui.FAILSAFE = False
+        pyautogui.MINIMUM_DURATION = 0.1
+        pyautogui.MINIMUM_SLEEP = 0.1
+        pyautogui.PAUSE = 2
+
         self.images = self.load_images()
         self.windows = self.load_windows()
 
@@ -132,9 +138,9 @@ class Bot:
         ScreenControls.movetowithrandomness(x, y, 1)
 
         if not Configuration.c['use_click_and_drag_instead_of_scroll']:
-            AutoUI.pyautogui.scroll(-Configuration.c['scroll_size'])
+            pyautogui.scroll(-Configuration.c['scroll_size'])
         else:
-            AutoUI.pyautogui.dragRel(0, -Configuration.c['click_and_drag_amount'], duration=1, button='left')
+            pyautogui.dragRel(0, -Configuration.c['click_and_drag_amount'], duration=1, button='left')
 
     def rest_all(self):
         logger('⚒️ Colocando os heróis para dormir (seus vagabundos)', 'green')
@@ -158,7 +164,7 @@ class Bot:
         buttons = self.click_on_send_all()
         for (x, y, w, h) in buttons:
             ScreenControls.movetowithrandomness(x + (w / 2), y + (h / 2), 1)
-            AutoUI.pyautogui.click()
+            pyautogui.click()
 
     def send_green_bar_heroes_to_work(self):
         offset = 140
@@ -179,7 +185,7 @@ class Bot:
         hero_clicks_cnt = 0
         for (x, y, w, h) in not_working_green_bars:
             ScreenControls.movetowithrandomness(x + offset + (w / 2), y + (h / 2), 1)
-            AutoUI.pyautogui.click()
+            pyautogui.click()
             self.hero_clicks = self.hero_clicks + 1
             hero_clicks_cnt = hero_clicks_cnt + 1
             if hero_clicks_cnt > 20:
@@ -202,7 +208,7 @@ class Bot:
 
         for (x, y, w, h) in not_working_full_bars:
             ScreenControls.movetowithrandomness(x + offset + (w / 2), y + (h / 2), 1)
-            AutoUI.pyautogui.click()
+            pyautogui.click()
             self.hero_clicks = self.hero_clicks + 1
 
         return len(not_working_full_bars)
@@ -291,7 +297,7 @@ class Bot:
         if self.login_attempts > 4:
             logger('🔃 Muitas tentativas de login, atualizando')
             self.login_attempts = 0
-            AutoUI.pyautogui.hotkey('ctrl', 'f5')
+            pyautogui.hotkey('ctrl', 'f5')
             return
 
         if ScreenControls.clickbtn(self.images['connect-wallet'], timeout=10):
@@ -365,7 +371,7 @@ class Bot:
         width = 200
         height = 50
 
-        myscreen = AutoUI.pyautogui.screenshot(region=(left, top, width, height))
+        myscreen = pyautogui.screenshot(region=(left, top, width, height))
         print(f'r = {left}, {top}, {width}, {height}')
         img_dir = os.path.dirname(os.path.realpath(__file__)) + r'\targets\saldo1.png'
         myscreen.save(img_dir)
@@ -390,7 +396,7 @@ class Bot:
 
             return
 
-        myscreen = AutoUI.pyautogui.screenshot()
+        myscreen = pyautogui.screenshot()
         img_dir = os.path.dirname(os.path.realpath(__file__)) + r'\targets\allscreens.png'
         myscreen.save(img_dir)
         time.sleep(4)
@@ -404,7 +410,7 @@ class Bot:
             currentWindow['refresh_page'] = 0
             currentWindow['login'] = 0
             currentWindow['window'].activate()
-            AutoUI.pyautogui.hotkey('ctrl', 'f5')
+            pyautogui.hotkey('ctrl', 'f5')
             time.sleep(15)
 
     def send_executions_infos(self):
