@@ -21,12 +21,11 @@ class Telegram:
         self.multi = Configuration.telegram['multi']
 
         if self.active:
-            self.tokenOwner = Configuration.telegram['tokenOwner']
-            self.chatidOwner = Configuration.telegram['chatidOwner']
+            self.tokenMain = Configuration.telegram['tokenMain']
+            self.chatidMain = Configuration.telegram['chatidMain']
 
             if self.multi:
-                self.tokenScholar = Configuration.telegram['tokenScholar']
-                self.chatidScholar = Configuration.telegram['chatidScholar']
+                self.secondaryInfos = Configuration.telegram['secondaryInfos']
 
             self.login_method = login_method
             self.search_for_workable_heroes = search_for_workable_heroes
@@ -37,27 +36,21 @@ class Telegram:
             self.send_execution_infos_method = send_execution_infos_method
             self.rest_all_method = rest_all_method
 
-            if int(len(self.tokenOwner)) > 10 and int(len(self.chatidOwner) >= 5):
-                self.bot = self.criar_bot_telegram(self.tokenOwner)
-                self.updater = Updater(token=self.tokenOwner)
-                self.dispatcher = self.updater.dispatcher
-                self.dispatcher.add_handler(CommandHandler("start", self.start_command))
-                self.dispatcher.add_handler(MessageHandler(Filters.text, self.message_handler))
+            if int(len(self.tokenMain)) > 10 and int(len(self.chatidMain) >= 5):
+                self.bot = self.criar_bot_telegram(self.tokenMain)
 
                 if self.multi:
-                    if int(len(self.tokenScholar)) > 10 and int(len(self.chatidScholar) >= 5):
-                        self.botScholar = self.criar_bot_telegram(self.tokenScholar)
-                        self.updaterScholar = Updater(token=self.tokenScholar)
-                        self.dispatcherScholar = self.updaterScholar.dispatcher
-                        self.dispatcherScholar.add_handler(CommandHandler("start", self.start_command))
-                        self.dispatcherScholar.add_handler(MessageHandler(Filters.text, self.message_handler))
+                    self.secondaryBots = []
 
-                        self.updaterScholar.start_polling()
+                    for i in self.secondaryInfos:
+                        aux = self.secondaryInfos[i]
+
+                        if int(len(aux['token'])) > 10 and int(len(aux['chatid']) >= 5):
+                            self.secondaryBots.append(self.criar_bot_telegram(aux['token']))
 
                 self.telsendtext('''
         /start Iniciar Bot
-        ''')
-                self.updater.start_polling()
+        ''', 0)
                 print('>>---> Notificações no Telegram habilitadas.\n')
             else:
                 print('>>---> Notificações no Telegram desabilitadas.\n')
@@ -98,32 +91,50 @@ class Telegram:
     def criar_bot_telegram(self, token):
         return telegram.Bot(token=token)
 
-    def telsendtext(self, bot_message, num_try=0):
+    def telsendtext(self, bot_message, activeaccount, num_try=0):
         if not self.active:
             return
-        try:
-            if self.multi:
-                self.botScholar.send_message(chat_id=self.chatidScholar, text=bot_message)
 
-            return self.bot.send_message(chat_id=self.chatidOwner, text=bot_message)
+        try:
+            self.bot.send_message(chat_id=self.chatidMain, text=bot_message)
         except:
             if num_try == 1:
-                self.bot = self.criar_bot_telegram(self.tokenOwner)
-                self.botScholar = self.criar_bot_telegram(self.tokenScholar)
-                return self.telsendtext(bot_message, 1)
+                self.bot = self.criar_bot_telegram(self.tokenMain)
+                return self.telsendtext(bot_message, activeaccount, 1)
             return 0
 
-    def telsendphoto(self, photo_path, num_try=0):
+        if activeaccount != 0:
+            if activeaccount in self.secondaryInfos[activeaccount]['profilesToSendMessage']:
+                try:
+                    return self.secondaryBots[activeaccount - 1].send_message(
+                        chat_id=self.secondaryInfos[activeaccount]['chatid'], text=bot_message)
+                except:
+                    if num_try == 1:
+                        self.secondaryBots.insert(activeaccount - 1, self.criar_bot_telegram(
+                            self.secondaryInfos[activeaccount]['token']))
+                        return self.telsendtext(bot_message, activeaccount, 1)
+                    return 0
+
+    def telsendphoto(self, photo_path, activeaccount, num_try=0):
         if not self.active:
             return
-        try:
-            if self.multi:
-                self.botScholar.send_photo(chat_id=self.chatidScholar, photo=open(photo_path, 'rb'))
 
-            return self.bot.send_photo(chat_id=self.chatidOwner, photo=open(photo_path, 'rb'))
+        try:
+            self.bot.send_photo(chat_id=self.chatidMain, photo=open(photo_path, 'rb'))
         except:
             if num_try == 1:
-                self.bot = self.criar_bot_telegram(self.tokenOwner)
-                self.botScholar = self.criar_bot_telegram(self.tokenScholar)
+                self.bot = self.criar_bot_telegram(self.tokenMain)
                 return self.telsendphoto(photo_path, 1)
             return 0
+
+        if activeaccount != 0:
+            if activeaccount in self.secondaryInfos[activeaccount]['profilesToSendMessage']:
+                try:
+                    return self.secondaryBots[activeaccount - 1].send_photo(
+                        chat_id=self.secondaryInfos[activeaccount]['chatid'], photo=open(photo_path, 'rb'))
+                except:
+                    if num_try == 1:
+                        self.secondaryBots.insert(activeaccount - 1,
+                                                  self.criar_bot_telegram(self.secondaryInfos[activeaccount]['token']))
+                        return self.telsendphoto(photo_path, 1)
+                    return 0
