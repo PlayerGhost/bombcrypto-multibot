@@ -1,16 +1,17 @@
 # BOT - MultiContas para BombCrypto - v 0.4.0
 
 ## Funções extras:
-- Envios de notificações via Telegram:
-	- Aviso de Inicialização do Bot
-	- Aviso de Conclusão de Mapa
-	- Saldo em BCOINS
+- Envios de notificações via Telegram para duas contas, podendo ser do dono da conta e de um Scholar:
+    - Aviso de Inicialização do Bot
+    - Aviso de Conclusão de Mapa
+    - Saldo em BCOINS
+- Login com email e senha em multiplas contas
 - Reinicio automático em caso de falha na execução
 - Identificação e Controle Automático das Janelas do BombCrypto
 - Coloca os heróis para trabalhar conforme variável
-	- Full = Envia apenas com energia cheia
-	- Green = Envia apenas com energia verde
-	- All = Envia todos os heróis pelo novo botão
+    - Full = Envia apenas com energia cheia
+    - Green = Envia apenas com energia verde
+    - All = Envia todos os heróis pelo novo botão
 - Todos os tempos de execução podem ser configurados
 
 ## Tutorial de Instalação
@@ -85,4 +86,4 @@ Apenas execute o arquivo IniciarBOT
 ### Todas as telas do jogo devem estar no monitor principal!
 
 ## Curtiu? Faça sua doação... Wallet BEP20
-### 0x0F134Cb0F31bc83780f3e5546598f4b25856A64f
+### 0xe8dB3a73A24ba73131d1Dc7d5667198E5Af586a3
