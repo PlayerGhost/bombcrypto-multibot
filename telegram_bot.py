@@ -103,7 +103,7 @@ class Telegram:
             return
         try:
             if self.multi:
-                self.bot.send_message(chat_id=self.chatidScholar, text=bot_message)
+                self.botScholar.send_message(chat_id=self.chatidScholar, text=bot_message)
 
             return self.bot.send_message(chat_id=self.chatidOwner, text=bot_message)
         except:
@@ -118,7 +118,7 @@ class Telegram:
             return
         try:
             if self.multi:
-                self.bot.send_photo(chat_id=self.chatidScholar, photo=open(photo_path, 'rb'))
+                self.botScholar.send_photo(chat_id=self.chatidScholar, photo=open(photo_path, 'rb'))
 
             return self.bot.send_photo(chat_id=self.chatidOwner, photo=open(photo_path, 'rb'))
         except:
