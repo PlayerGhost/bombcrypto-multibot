@@ -1,4 +1,4 @@
-# BOT - MultiAccount for BombCrypto - v 0.4.0
+# BOT - MultiAccount for BombCrypto - v 0.5.1
 
 ## Extra functions:
 - Sending notifications via Telegram:
@@ -84,4 +84,4 @@ Just run the IniciarBOT file
 ### Monitor Scale: 100%
 
 ## Did you like it? make your donation... Wallet BEP20
-### 0x0F134Cb0F31bc83780f3e5546598f4b25856A64f
+### 0xe8dB3a73A24ba73131d1Dc7d5667198E5Af586a3
