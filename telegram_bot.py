@@ -23,8 +23,6 @@ class Telegram:
         if self.active:
             self.tokenOwner = Configuration.telegram['tokenOwner']
             self.chatidOwner = Configuration.telegram['chatidOwner']
-            self.tokenScholar = None
-            self.chatidScholar = None
 
             if self.multi:
                 self.tokenScholar = Configuration.telegram['tokenScholar']
