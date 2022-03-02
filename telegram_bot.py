@@ -103,7 +103,7 @@ class Telegram:
                 return self.telsendtext(bot_message, activeaccount, 1)
             return 0
 
-        if activeaccount != 0:
+        if activeaccount != 0 and self.multi:
             if activeaccount in self.secondaryInfos[activeaccount]['profilesToSendMessage']:
                 try:
                     return self.secondaryBots[activeaccount - 1].send_message(
@@ -127,7 +127,7 @@ class Telegram:
                 return self.telsendphoto(photo_path, 1)
             return 0
 
-        if activeaccount != 0:
+        if activeaccount != 0 and self.multi:
             if activeaccount in self.secondaryInfos[activeaccount]['profilesToSendMessage']:
                 try:
                     return self.secondaryBots[activeaccount - 1].send_photo(
