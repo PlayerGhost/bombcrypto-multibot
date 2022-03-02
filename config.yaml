@@ -9,8 +9,8 @@ accountLabels:
 # Configurações de conexão para Telegram
 # multi = True, se quiser que envie mensagem para mais de um Telegram
 telegram:
-  active: True
-  multi: True
+  active: False
+  multi: False
   tokenMain: ""
   chatidMain: ""
 
