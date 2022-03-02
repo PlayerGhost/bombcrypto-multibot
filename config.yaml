@@ -52,7 +52,7 @@ time_intervals:
 
   # Intervalo de tempo entre movimentos
   # Valor padrão (em segundos): 1
-  interval_between_movements: 2
+  interval_between_movements: 1
 
   # Intervalo de tempo para verificar se o saldo aumentou
   # Valor padrão (em minutos): 60
