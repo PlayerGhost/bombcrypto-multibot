@@ -22,7 +22,7 @@ telegram:
     1:
       token: ""
       chatid: ""
-      profilesToSendMessage: [1, 2, 3]
+      profilesToSendMessage: [1, 2, 3, 4]
     2:
       token: ""
       chatid: ""
