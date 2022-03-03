@@ -1,7 +1,7 @@
 instruction = '''
 >>---> BOT - MultiContas para BombCrypto - v 0.5.5 
 
->>---> https://github.com/rzanca/bombcrypto-multibot/
+>>---> https://github.com/PlayerGhost/bombcrypto-multibot
 
 >>---> Curtiu? Faça sua doação... Wallet BEP20
 >>---> 0xe8dB3a73A24ba73131d1Dc7d5667198E5Af586a3
