@@ -91,7 +91,7 @@ class Telegram:
     def criar_bot_telegram(self, token):
         return telegram.Bot(token=token)
 
-    def telsendtext(self, bot_message, activeaccount, num_try=0):
+    def telsendtext(self, bot_message, activeAccount, num_try=0):
         if not self.active:
             return
 
@@ -100,22 +100,23 @@ class Telegram:
         except:
             if num_try == 1:
                 self.bot = self.criar_bot_telegram(self.tokenMain)
-                return self.telsendtext(bot_message, activeaccount, 1)
+                return self.telsendtext(bot_message, activeAccount, 1)
             return 0
 
-        if activeaccount != 0 and self.multi:
-            if activeaccount in self.secondaryInfos[activeaccount]['profilesToSendMessage']:
-                try:
-                    return self.secondaryBots[activeaccount - 1].send_message(
-                        chat_id=self.secondaryInfos[activeaccount]['chatid'], text=bot_message)
-                except:
-                    if num_try == 1:
-                        self.secondaryBots.insert(activeaccount - 1, self.criar_bot_telegram(
-                            self.secondaryInfos[activeaccount]['token']))
-                        return self.telsendtext(bot_message, activeaccount, 1)
-                    return 0
+        if activeAccount != 0 and self.multi:
+            for i in range(0, len(self.secondaryInfos)):
+                if activeAccount in self.secondaryInfos[i+1]['profilesToSendMessage']:
+                    try:
+                        self.secondaryBots[i].send_message(
+                            chat_id=self.secondaryInfos[i+1]['chatid'], text=bot_message)
+                    except:
+                        if num_try == 1:
+                            self.secondaryBots.insert(i, self.criar_bot_telegram(
+                                self.secondaryInfos[i+1]['token']))
+                            return self.telsendtext(bot_message, activeAccount, 1)
+                        return 0
 
-    def telsendphoto(self, photo_path, activeaccount, num_try=0):
+    def telsendphoto(self, photo_path, activeAccount, num_try=0):
         if not self.active:
             return
 
@@ -127,14 +128,15 @@ class Telegram:
                 return self.telsendphoto(photo_path, 1)
             return 0
 
-        if activeaccount != 0 and self.multi:
-            if activeaccount in self.secondaryInfos[activeaccount]['profilesToSendMessage']:
-                try:
-                    return self.secondaryBots[activeaccount - 1].send_photo(
-                        chat_id=self.secondaryInfos[activeaccount]['chatid'], photo=open(photo_path, 'rb'))
-                except:
-                    if num_try == 1:
-                        self.secondaryBots.insert(activeaccount - 1,
-                                                  self.criar_bot_telegram(self.secondaryInfos[activeaccount]['token']))
-                        return self.telsendphoto(photo_path, 1)
-                    return 0
+        if activeAccount != 0 and self.multi:
+            for i in range(0, len(self.secondaryInfos)):
+                if activeAccount in self.secondaryInfos[i+1]['profilesToSendMessage']:
+                    try:
+                        self.secondaryBots[i].send_photo(
+                            chat_id=self.secondaryInfos[i+1]['chatid'], photo=open(photo_path, 'rb'))
+                    except:
+                        if num_try == 1:
+                            self.secondaryBots.insert(i,
+                                                      self.criar_bot_telegram(self.secondaryInfos[i+1]['token']))
+                            return self.telsendphoto(photo_path, activeAccount, 1)
+                        return 0

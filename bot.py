@@ -42,6 +42,7 @@ class Bot:
         self.accounts = 0
         self.activeaccount = 0
         self.accountLabels = Configuration.accountLabels
+        self.defaultProfileLabel = None
         # self.accountslist = list(range(0, self.accounts))
 
     # region Configs
@@ -377,12 +378,7 @@ class Bot:
         myscreen.save(img_dir)
         time.sleep(4)
 
-        profileLabel = self.accountLabels[self.activeaccount]
-
-        if profileLabel == '':
-            profileLabel = curwind
-
-        enviar = ('🚨 Seu saldo Bcoins 🚀🚀🚀 na conta %s' % profileLabel)
+        enviar = ('🚨 Seu saldo Bcoins 🚀🚀🚀 na conta %s' % self.get_profile_label())
         self.telegram.telsendtext(enviar, self.activeaccount)
         self.telegram.telsendphoto(img_dir, self.activeaccount)
         self.click_on_x()
@@ -449,6 +445,12 @@ class Bot:
 
             self.telegram.telsendtext(texto, self.activeaccount)
 
+    def get_profile_label(self):
+        if self.activeaccount in self.accountLabels:
+            return self.accountLabels[self.activeaccount]
+        else:
+            return self.defaultProfileLabel
+
     def start(self):
         print(instruction)
         time.sleep(5)
@@ -465,6 +467,7 @@ class Bot:
                 for currentWindow in self.windows:
                     time.sleep(2)
                     now = time.time()
+                    self.defaultProfileLabel = currentWindow['window'].title
                     currentWindow['window'].activate()
                     if not currentWindow['window'].isMaximized:
                         currentWindow['window'].maximize()
@@ -490,13 +493,8 @@ class Bot:
                         currentWindow['maps'].append(now)
 
                         if ScreenControls.clickbtn(self.images['new-map']):
-                            profileLabel = self.accountLabels[self.activeaccount]
-
-                            if profileLabel == '':
-                                profileLabel = currentWindow['window'].title
-
                                 self.telegram.telsendtext(
-                                    f'Completamos mais um mapa na conta %s' % profileLabel,
+                                    f'Completamos mais um mapa na conta %s' % self.get_profile_label(),
                                     self.activeaccount)
                                 loggerMapClicked()
                                 time.sleep(3)
@@ -504,7 +502,7 @@ class Bot:
                                 if num_jaulas > 0:
                                     self.telegram.telsendtext(
                                         f'Parabéns temos {num_jaulas} nova(s) jaula(s) no novo mapa 🎉🎉🎉, na conta %s' %
-                                        profileLabel, self.activeaccount)
+                                        self.get_profile_label(), self.activeaccount)
 
                     if now - currentWindow['refresh_heroes'] > self.add_randomness(t['refresh_heroes_positions'] * 60):
                         currentWindow['refresh_heroes'] = now
