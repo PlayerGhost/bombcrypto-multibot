@@ -1,6 +1,6 @@
 ---
-#Nome dos perfis de cada conta
-#Os valores devem ser crescentes de 1 até o número total das suas contas
+# Nome dos perfis de cada conta
+# Os valores devem ser crescentes de 1 até o número total das suas contas
 accountLabels:
   1: "Conta 1"
   2: "Conta 2"
@@ -16,7 +16,7 @@ telegram:
   # Os valores devem ser crescentes de 1 até o número total das suas contas
   # Inclua o token e chatid de cada conta do jeito que está neste exemplo
   # Informe quais Telelegrams receberão as informações dos seus respectivos perfis
-  #Ativado = True, Desativado = False, se quiser que envie mensagem para mais de um Telegram
+  # Ativado = True, Desativado = False, se quiser que envie mensagem para mais de um Telegram
   activate: False
   secondaryInfos:
     1:
