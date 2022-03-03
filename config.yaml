@@ -7,10 +7,8 @@ accountLabels:
   3: "Conta 3"
 
 # Configurações de conexão para Telegram
-# multi = True, se quiser que envie mensagem para mais de um Telegram
 telegram:
   active: False
-  multi: False
   tokenMain: ""
   chatidMain: ""
 
@@ -18,6 +16,8 @@ telegram:
   # Os valores devem ser crescentes de 1 até o número total das suas contas
   # Inclua o token e chatid de cada conta do jeito que está neste exemplo
   # Informe quais Telelegrams receberão as informações dos seus respectivos perfis
+  #Ativado = True, Desativado = False, se quiser que envie mensagem para mais de um Telegram
+  activate: False
   secondaryInfos:
     1:
       token: ""
@@ -36,7 +36,7 @@ telegram:
 time_intervals:
   # Intervalo de tempo para verificar se há heróis disponíveis para trabalhar
   # Valor padrão (em minutos): 10
-  send_heroes_for_work: 45
+  send_heroes_for_work: 10
 
   # Intervalo de tempo para atualizar a posição dos heróis no mapa
   # Valor padrão (em minutos): 3
