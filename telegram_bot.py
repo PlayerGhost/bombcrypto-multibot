@@ -18,7 +18,7 @@ class Telegram:
                  ):
 
         self.active = Configuration.telegram['active']
-        self.multi = Configuration.telegram['multi']
+        self.multi = Configuration.telegram['activate']
 
         if self.active:
             self.tokenMain = Configuration.telegram['tokenMain']
