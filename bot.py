@@ -12,6 +12,7 @@ from configuration import Configuration
 from telegram_bot import Telegram
 from screen_controls import ScreenControls
 from instructions import instruction
+#from strings import Strings
 
 
 class Bot:
@@ -62,12 +63,16 @@ class Bot:
         return targets
 
     def load_heroes_to_send_home(self):
+        if not Configuration.home['enable']:
+            return
+
         file_names = listdir('./targets/heroes-to-send-home')
         heroes = []
         for file in file_names:
             path = './targets/heroes-to-send-home/' + file
             heroes.append(cv2.imread(path))
 
+        #print('>>--->{} %d Heróis que devem ser mandados para casa carregados.' % len(heroes))
         print('>>---> %d Heróis que devem ser mandados para casa carregados.' % len(heroes))
         return heroes
 
@@ -513,6 +518,8 @@ class Bot:
             return self.defaultProfileLabel
 
     def start(self):
+        a = 0
+        aa = "a {a}"
         print(instruction)
         time.sleep(5)
         t = Configuration.c['time_intervals']
