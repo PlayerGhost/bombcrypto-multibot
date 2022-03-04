@@ -343,13 +343,13 @@ class Bot:
 
     def go_balance(self, update_last_execute=False, curwind=''):
         if update_last_execute:
-            self.telegram.telsendtext('O bot irá consultar seu saldo, aguarde!', 0)
+            self.telegram.telsendtext('O bot irá consultar seu baú, aguarde!', 0)
             for currentWindow in self.windows:
                 currentWindow['balance'] = 0
 
             return
 
-        logger('Consultando seu saldo')
+        logger('Consultando seu baú')
         time.sleep(2)
         self.click_on_balance()
         i = 10
@@ -367,10 +367,10 @@ class Bot:
             return
 
         left, top, width, height = coins_pos[0]
-        left = left - 44
-        top = top + 130
-        width = 200
-        height = 50
+        left -= 10
+        top -= 40
+        width = 586
+        height = 180
 
         myscreen = pyautogui.screenshot(region=(left, top, width, height))
         print(f'r = {left}, {top}, {width}, {height}')
@@ -378,7 +378,7 @@ class Bot:
         myscreen.save(img_dir)
         time.sleep(4)
 
-        enviar = ('🚨 Seu saldo Bcoins 🚀🚀🚀 na conta %s' % self.get_profile_label())
+        enviar = ('🚨 Seu baú 🚀🚀🚀 na conta %s' % self.get_profile_label())
         self.telegram.telsendtext(enviar, self.activeaccount)
         self.telegram.telsendphoto(img_dir, self.activeaccount)
         self.click_on_x()
