@@ -24,6 +24,7 @@ class Bot:
         pyautogui.PAUSE = 2
 
         self.images = self.load_images()
+        self.home_heroes = self.load_heroes_to_send_home()
         self.windows = self.load_windows()
 
         self.telegram = Telegram(
@@ -59,6 +60,16 @@ class Bot:
             path = 'targets/' + file
             targets[self.remove_suffix(file, '.png')] = cv2.imread(path)
         return targets
+
+    def load_heroes_to_send_home(self):
+        file_names = listdir('./targets/heroes-to-send-home')
+        heroes = []
+        for file in file_names:
+            path = './targets/heroes-to-send-home/' + file
+            heroes.append(cv2.imread(path))
+
+        print('>>---> %d Heróis que devem ser mandados para casa carregados.' % len(heroes))
+        return heroes
 
     def load_windows(self):
         windows = []
@@ -97,13 +108,23 @@ class Bot:
 
     # region Click de Botões
 
-    def click_on_go_work(self):
-        return ScreenControls.positions(self.images['go-work'], threshold=Configuration.threshold['go_to_work_btn'])
+    def click_on_go_work(self, image):
+        # return ScreenControls.positions(self.images['go-work'], threshold=Configuration.threshold['go_to_work_btn'])
+        return ScreenControls.positions(image, threshold=Configuration.threshold['go_to_work_btn'])
+
+    def click_on_go_home(self, image):
+        # return ScreenControls.positions(self.images['go-home'], threshold=Configuration.threshold['go_to_home_btn'])
+        return ScreenControls.positions(image, threshold=Configuration.threshold['home_button_threshold'])
+
+    def click_on_hero_home(self, image):
+        return ScreenControls.positions(image, threshold=Configuration.threshold['hero_threshold'])
 
     def click_on_green_bar(self):
+        # return ScreenControls.positions(self.images['green-bar'], threshold=Configuration.threshold['green_bar'])
         return ScreenControls.positions(self.images['green-bar'], threshold=Configuration.threshold['green_bar'])
 
     def click_on_full_bar(self):
+        # return ScreenControls.positions(self.images['full-stamina'], threshold=Configuration.threshold['default'])
         return ScreenControls.positions(self.images['full-stamina'], threshold=Configuration.threshold['default'])
 
     def click_on_treasure_hunt(self, timeout=3):
@@ -153,6 +174,16 @@ class Bot:
 
     def is_working(self, bar, buttons):
         y = bar[1]
+
+        for (_, button_y, _, button_h) in buttons:
+            isbelow = y < (button_y + button_h)
+            isabove = y > (button_y - button_h)
+            if isbelow and isabove:
+                return False
+        return True
+
+    def is_home(self, hero, buttons):
+        y = hero[1]
 
         for (_, button_y, _, button_h) in buttons:
             isbelow = y < (button_y + button_h)
@@ -222,6 +253,38 @@ class Bot:
         else:
             return self.send_all()
 
+    def send_heroes_to_home(self):
+        if not Configuration.home['enable']:
+            return
+        heroes_positions = []
+        for hero in self.home_heroes:
+            hero_positions = self.click_on_hero_home(hero)
+            if not len(hero_positions) == 0:
+                hero_position = hero_positions[0]
+                heroes_positions.append(hero_position)
+
+        n = len(heroes_positions)
+        if n == 0:
+            print('Nenhum herói que deveria ser enviado para casa encontrado.')
+            return
+        print(' %d Heróis que devem ser enviados para casa encontrados.' % n)
+        go_home_buttons = self.click_on_go_home(self.images['go-home'])
+        go_work_buttons = self.click_on_go_work(self.images['go-work'])
+
+        for position in heroes_positions:
+            if not self.is_home(position, go_home_buttons):
+                print(self.is_working(position, go_work_buttons))
+                if not self.is_working(position, go_work_buttons):
+                    print('Herói não está trabalhando, enviando para casa.')
+                    ScreenControls.movetowithrandomness(go_home_buttons[0][0] + go_home_buttons[0][2] / 2,
+                                                        position[1] + position[3] / 2,
+                                                        1)
+                    pyautogui.click()
+                else:
+                    print('Herói está trabalhando, não será enviado para casa.')
+            else:
+                print('Herói já está na casa, ou a casa está cheia.')
+
     def go_to_heroes(self):
         if self.click_on_go_back():
             self.login_attempts = 0
@@ -257,6 +320,7 @@ class Bot:
         else:
             while empty_scrolls_attempts > 0:
                 self.send_heroes_to_work()
+                self.send_heroes_to_home()
                 empty_scrolls_attempts = empty_scrolls_attempts - 1
                 self.scroll()
                 time.sleep(2)
@@ -494,16 +558,16 @@ class Bot:
                         currentWindow['maps'].append(now)
 
                         if ScreenControls.clickbtn(self.images['new-map']):
+                            self.telegram.telsendtext(
+                                f'Completamos mais um mapa na conta %s' % self.get_profile_label(),
+                                self.activeaccount)
+                            loggerMapClicked()
+                            time.sleep(3)
+                            num_jaulas = len(ScreenControls.positions(self.images['jail'], threshold=0.8))
+                            if num_jaulas > 0:
                                 self.telegram.telsendtext(
-                                    f'Completamos mais um mapa na conta %s' % self.get_profile_label(),
-                                    self.activeaccount)
-                                loggerMapClicked()
-                                time.sleep(3)
-                                num_jaulas = len(ScreenControls.positions(self.images['jail'], threshold=0.8))
-                                if num_jaulas > 0:
-                                    self.telegram.telsendtext(
-                                        f'Parabéns temos {num_jaulas} nova(s) jaula(s) no novo mapa 🎉🎉🎉, na conta %s' %
-                                        self.get_profile_label(), self.activeaccount)
+                                    f'Parabéns temos {num_jaulas} nova(s) jaula(s) no novo mapa 🎉🎉🎉, na conta %s' %
+                                    self.get_profile_label(), self.activeaccount)
 
                     if now - currentWindow['refresh_heroes'] > self.add_randomness(t['refresh_heroes_positions'] * 60):
                         currentWindow['refresh_heroes'] = now

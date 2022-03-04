@@ -108,7 +108,7 @@ threshold:
   # Valor padrão: 0.8
   select_wallet_buttons: 0.8
 
-  # Valor padrão: 0.9
+  # Valor padrão: 0.7
   go_to_work_btn: 0.7
 
   # Valor padrão: 0.9
