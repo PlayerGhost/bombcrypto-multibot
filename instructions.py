@@ -1,5 +1,5 @@
 instruction = '''
->>---> BOT - MultiContas para BombCrypto - v 0.5.6 
+>>---> BOT - MultiContas para BombCrypto - v 0.5.8 
 
 >>---> https://github.com/PlayerGhost/bombcrypto-multibot
 
