@@ -108,23 +108,19 @@ class Bot:
 
     # region Click de Botões
 
-    def click_on_go_work(self, image):
-        # return ScreenControls.positions(self.images['go-work'], threshold=Configuration.threshold['go_to_work_btn'])
-        return ScreenControls.positions(image, threshold=Configuration.threshold['go_to_work_btn'])
+    def click_on_go_work(self):
+        return ScreenControls.positions(self.images['go-work'], threshold=Configuration.threshold['go_to_work_btn'])
 
-    def click_on_go_home(self, image):
-        # return ScreenControls.positions(self.images['go-home'], threshold=Configuration.threshold['go_to_home_btn'])
-        return ScreenControls.positions(image, threshold=Configuration.threshold['home_button_threshold'])
+    def click_on_go_home(self):
+        return ScreenControls.positions(self.images['go-home'], threshold=Configuration.threshold['home_button_threshold'])
 
     def click_on_hero_home(self, image):
         return ScreenControls.positions(image, threshold=Configuration.threshold['hero_threshold'])
 
     def click_on_green_bar(self):
-        # return ScreenControls.positions(self.images['green-bar'], threshold=Configuration.threshold['green_bar'])
         return ScreenControls.positions(self.images['green-bar'], threshold=Configuration.threshold['green_bar'])
 
     def click_on_full_bar(self):
-        # return ScreenControls.positions(self.images['full-stamina'], threshold=Configuration.threshold['default'])
         return ScreenControls.positions(self.images['full-stamina'], threshold=Configuration.threshold['default'])
 
     def click_on_treasure_hunt(self, timeout=3):
@@ -268,8 +264,8 @@ class Bot:
             print('Nenhum herói que deveria ser enviado para casa encontrado.')
             return
         print(' %d Heróis que devem ser enviados para casa encontrados.' % n)
-        go_home_buttons = self.click_on_go_home(self.images['go-home'])
-        go_work_buttons = self.click_on_go_work(self.images['go-work'])
+        go_home_buttons = self.click_on_go_home()
+        go_work_buttons = self.click_on_go_work()
 
         for position in heroes_positions:
             if not self.is_home(position, go_home_buttons):
