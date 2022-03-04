@@ -396,7 +396,8 @@ class Bot:
         img_dir = os.path.dirname(os.path.realpath(__file__)) + r'\targets\allscreens.png'
         myscreen.save(img_dir)
         time.sleep(4)
-        self.telegram.telsendtext('Aqui vai como está sua tela!', self.activeaccount)
+        self.telegram.telsendtext('Aqui vai como está sua tela na conta %s' % self.get_profile_label(),
+                                  self.activeaccount)
         self.telegram.telsendphoto(img_dir, self.activeaccount)
         time.sleep(4)
 
