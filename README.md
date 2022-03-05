@@ -15,6 +15,7 @@
     - Green = Envia apenas com energia verde
     - All = Envia todos os heróis pelo novo botão
 - Todos os tempos de execução podem ser configurados
+-Auto Update (basta executar o arquivo Update.bat)
 
 ## Tutorial de Instalação
 
