@@ -1,4 +1,7 @@
 ---
+# language = "pt" / "en"
+language: "pt"
+
 # Nome dos perfis de cada conta
 # Os valores devem ser crescentes de 1 até o número total das suas contas
 accountLabels:
