@@ -12,7 +12,7 @@ from configuration import Configuration
 from telegram_bot import Telegram
 from screen_controls import ScreenControls
 from instructions import instruction
-#from strings import Strings
+from strings import Strings
 
 
 class Bot:
@@ -45,6 +45,7 @@ class Bot:
         self.activeaccount = 0
         self.accountLabels = Configuration.accountLabels
         self.defaultProfileLabel = None
+        self.strings = Strings(Configuration.language)
         # self.accountslist = list(range(0, self.accounts))
 
     # region Configs
@@ -72,8 +73,7 @@ class Bot:
             path = './targets/heroes-to-send-home/' + file
             heroes.append(cv2.imread(path))
 
-        #print('>>--->{} %d Heróis que devem ser mandados para casa carregados.' % len(heroes))
-        print('>>---> %d Heróis que devem ser mandados para casa carregados.' % len(heroes))
+        print(f">>---> {self.strings.getRegionalizedString(0)} {len(heroes)}")
         return heroes
 
     def load_windows(self):
@@ -117,7 +117,8 @@ class Bot:
         return ScreenControls.positions(self.images['go-work'], threshold=Configuration.threshold['go_to_work_btn'])
 
     def click_on_go_home(self):
-        return ScreenControls.positions(self.images['go-home'], threshold=Configuration.threshold['home_button_threshold'])
+        return ScreenControls.positions(self.images['go-home'],
+                                        threshold=Configuration.threshold['home_button_threshold'])
 
     def click_on_hero_home(self, image):
         return ScreenControls.positions(image, threshold=Configuration.threshold['hero_threshold'])
@@ -166,7 +167,7 @@ class Bot:
             pyautogui.dragRel(0, -Configuration.c['click_and_drag_amount'], duration=1, button='left')
 
     def rest_all(self):
-        logger('⚒️ Colocando os heróis para dormir (seus vagabundos)', 'green')
+        logger(f'⚒️ {self.strings.getRegionalizedString(1)}', 'green')
         self.go_to_heroes()
         time.sleep(10)
         self.click_on_rest_all()
@@ -203,17 +204,18 @@ class Bot:
         offset = 140
 
         green_bars = self.click_on_green_bar()
-        logger('🟩 %d Barras verdes detectadas' % len(green_bars))
+        logger(f'🟩 {len(green_bars)} {self.strings.getRegionalizedString(2)}')
         buttons = self.click_on_go_work()
-        logger('🆗 %d Botoes detectados' % len(buttons))
+        logger(f'🆗 {len(buttons)} {self.strings.getRegionalizedString(3)}')
 
         not_working_green_bars = []
         for bar in green_bars:
             if not self.is_working(bar, buttons):
                 not_working_green_bars.append(bar)
         if len(not_working_green_bars) > 0:
-            logger('🆗 %d Botoes com barra verde detectados' % len(not_working_green_bars))
-            logger('👆 Clicando em %d heróis' % len(not_working_green_bars))
+            logger(f'🆗 {len(not_working_green_bars)} {self.strings.getRegionalizedString(4)}')
+            logger(
+                f'👆 {self.strings.getRegionalizedString(5)} {len(not_working_green_bars)} {self.strings.getRegionalizedString(6)}')
 
         hero_clicks_cnt = 0
         for (x, y, w, h) in not_working_green_bars:
@@ -222,7 +224,7 @@ class Bot:
             self.hero_clicks = self.hero_clicks + 1
             hero_clicks_cnt = hero_clicks_cnt + 1
             if hero_clicks_cnt > 20:
-                logger('⚠️ Houve muitos cliques em heróis, tente aumentar o go_to_work_btn threshold')
+                logger(f'⚠️ {self.strings.getRegionalizedString(7)}')
                 return
         return len(not_working_green_bars)
 
@@ -237,7 +239,10 @@ class Bot:
                 not_working_full_bars.append(bar)
 
         if len(not_working_full_bars) > 0:
-            logger('👆 Clicando em %d heróis' % len(not_working_full_bars))
+            logger(
+                f'👆 {self.strings.getRegionalizedString(5)} {len(not_working_full_bars)} {self.strings.getRegionalizedString(6)}')
+            logger(
+                f'👆 {self.strings.getRegionalizedString(5)} {len(not_working_full_bars)} {self.strings.getRegionalizedString(6)}')
 
         for (x, y, w, h) in not_working_full_bars:
             ScreenControls.movetowithrandomness(x + offset + (w / 2), y + (h / 2), 1)
@@ -266,9 +271,9 @@ class Bot:
 
         n = len(heroes_positions)
         if n == 0:
-            print('Nenhum herói que deveria ser enviado para casa encontrado.')
+            print(self.strings.getRegionalizedString(8))
             return
-        print(' %d Heróis que devem ser enviados para casa encontrados.' % n)
+        print(f'{n} {self.strings.getRegionalizedString(9)}')
         go_home_buttons = self.click_on_go_home()
         go_work_buttons = self.click_on_go_work()
 
@@ -276,15 +281,15 @@ class Bot:
             if not self.is_home(position, go_home_buttons):
                 print(self.is_working(position, go_work_buttons))
                 if not self.is_working(position, go_work_buttons):
-                    print('Herói não está trabalhando, enviando para casa.')
+                    print(self.strings.getRegionalizedString(10))
                     ScreenControls.movetowithrandomness(go_home_buttons[0][0] + go_home_buttons[0][2] / 2,
                                                         position[1] + position[3] / 2,
                                                         1)
                     pyautogui.click()
                 else:
-                    print('Herói está trabalhando, não será enviado para casa.')
+                    print(self.strings.getRegionalizedString(11))
             else:
-                print('Herói já está na casa, ou a casa está cheia.')
+                print(self.strings.getRegionalizedString(12))
 
     def go_to_heroes(self):
         if self.click_on_go_back():
@@ -296,7 +301,7 @@ class Bot:
 
     def search_for_workable_heroes(self, update_last_execute=False):
         if update_last_execute:
-            self.telegram.telsendtext('O bot irá colocar os bonecos para trabalhar!', self.activeaccount)
+            self.telegram.telsendtext(self.strings.getRegionalizedString(13), self.activeaccount)
             for currentWindow in self.windows:
                 currentWindow['heroes'] = 0
 
@@ -305,18 +310,18 @@ class Bot:
         self.go_to_heroes()
 
         if Configuration.c['select_heroes_mode'] == 'full':
-            logger('⚒️ Enviando heróis com a energia cheia para o trabalho', 'green')
+            logger(f'⚒️ {self.strings.getRegionalizedString(14)}', 'green')
         elif Configuration.c['select_heroes_mode'] == 'green':
-            logger('⚒️ Enviando heróis com a energia verde para o trabalho', 'green')
+            logger(f'⚒️ {self.strings.getRegionalizedString(15)}', 'green')
         else:
-            logger('⚒️ Enviando todos heróis para o trabalho', 'green')
+            logger(f'⚒️ {self.strings.getRegionalizedString(16)}', 'green')
 
         empty_scrolls_attempts = Configuration.c['scroll_attempts']
 
         if Configuration.c['select_heroes_mode'] == 'all':
             time.sleep(4)
             self.send_all()
-            logger('💪 ALL heroes sent to work')
+            logger(self.strings.getRegionalizedString(17))
             time.sleep(4)
         else:
             while empty_scrolls_attempts > 0:
@@ -325,7 +330,7 @@ class Bot:
                 empty_scrolls_attempts = empty_scrolls_attempts - 1
                 self.scroll()
                 time.sleep(2)
-            logger('💪 {} Heróis enviados para o trabalho'.format(self.hero_clicks))
+            logger(f'💪 {self.hero_clicks} {self.strings.getRegionalizedString(18)}')
 
         self.go_to_treasure_hunt()
 
@@ -338,13 +343,13 @@ class Bot:
 
     def refresh_heroes_positions(self, update_last_execute=False):
         if update_last_execute:
-            self.telegram.telsendtext('O bot irá atualizar a posição dos heróis aguarde!', 0)
+            self.telegram.telsendtext(self.strings.getRegionalizedString(19), 0)
             for currentWindow in self.windows:
                 currentWindow['refresh_heroes'] = 0
 
             return
 
-        logger('🔃 Atualizando posição dos heróis')
+        logger(f'🔃 {self.strings.getRegionalizedString(20)}')
         self.click_on_go_back()
         time.sleep(2)
         self.click_on_treasure_hunt()
@@ -353,21 +358,21 @@ class Bot:
 
     def login(self, update_last_execute=False):
         if update_last_execute:
-            self.telegram.telsendtext('O bot irá logar, aguarde!', 0)
+            self.telegram.telsendtext(self.strings.getRegionalizedString(21), 0)
             for currentWindow in self.windows:
                 currentWindow['login'] = 0
             return
 
-        logger('😿 Checando se o jogo se desconectou')
+        logger(f'😿 {self.strings.getRegionalizedString(22)}')
 
         if self.login_attempts > 10:
-            logger('🔃 Muitas tentativas de login, atualizando')
+            logger(f'🔃 {self.strings.getRegionalizedString(23)}')
             self.login_attempts = 0
             pyautogui.hotkey('ctrl', 'f5')
             return
 
         if ScreenControls.clickbtn(self.images['connect-wallet'], timeout=10):
-            logger('🎉 Botão de conexão da carteira encontrado, logando!')
+            logger(f'🎉 {self.strings.getRegionalizedString(24)}')
             self.login_attempts = self.login_attempts + 1
         time.sleep(5)
 
@@ -376,19 +381,19 @@ class Bot:
         if l["activated"] == True:
             if ScreenControls.clickbtn(self.images['type-username'], timeout=10):
                 ScreenControls.inputtype(l["accounts"][self.activeaccount]["username"])
-                logger('⌨ Preenchendo campo de usuário!')
+                logger(f'⌨ {self.strings.getRegionalizedString(25)}')
 
             if ScreenControls.clickbtn(self.images['type-password'], timeout=10):
                 ScreenControls.inputtype(l["accounts"][self.activeaccount]["password"])
-                logger('⌨ Preenchendo campo de senha!')
+                logger(f'⌨ {self.strings.getRegionalizedString(26)}')
 
             if ScreenControls.clickbtn(self.images['connect-login'], timeout=10):
-                logger('👌 Clicando no botão login!')
+                logger(f'👌 {self.strings.getRegionalizedString(27)}')
                 self.login_attempts = self.login_attempts + 1
                 time.sleep(2)
         else:
             if ScreenControls.clickbtn(self.images['connect-metamask'], timeout=10):
-                logger('👌 Botão de conexão pela metamask, clicado!')
+                logger(f'👌 {self.strings.getRegionalizedString(28)}')
                 self.login_attempts = self.login_attempts + 1
                 time.sleep(10)
 
@@ -408,13 +413,13 @@ class Bot:
 
     def go_balance(self, update_last_execute=False, curwind=''):
         if update_last_execute:
-            self.telegram.telsendtext('O bot irá consultar seu baú, aguarde!', 0)
+            self.telegram.telsendtext(self.strings.getRegionalizedString(29), 0)
             for currentWindow in self.windows:
                 currentWindow['balance'] = 0
 
             return
 
-        logger('Consultando seu baú')
+        logger(self.strings.getRegionalizedString(30))
         time.sleep(2)
         self.click_on_balance()
         i = 10
@@ -427,7 +432,7 @@ class Bot:
             time.sleep(5)
 
         if len(coins_pos) == 0:
-            logger('Saldo não encontrado.')
+            logger(self.strings.getRegionalizedString(31))
             self.click_on_x()
             return
 
@@ -443,7 +448,7 @@ class Bot:
         myscreen.save(img_dir)
         time.sleep(4)
 
-        enviar = ('🚨 Seu baú 🚀🚀🚀 na conta %s' % self.get_profile_label())
+        enviar = f'{self.strings.getRegionalizedString(32)} {self.get_profile_label()}'
         self.telegram.telsendtext(enviar, self.activeaccount)
         self.telegram.telsendphoto(img_dir, self.activeaccount)
         self.click_on_x()
@@ -451,7 +456,7 @@ class Bot:
 
     def send_screenshot(self, update_last_execute=False):
         if update_last_execute:
-            self.telegram.telsendtext('O bot irá tirar screenshot das suas telas, aguarde!', 0)
+            self.telegram.telsendtext(self.strings.getRegionalizedString(33), 0)
             for currentWindow in self.windows:
                 currentWindow['send_screenshot'] = 0
 
@@ -461,13 +466,12 @@ class Bot:
         img_dir = os.path.dirname(os.path.realpath(__file__)) + r'\targets\allscreens.png'
         myscreen.save(img_dir)
         time.sleep(4)
-        self.telegram.telsendtext('Aqui vai como está sua tela na conta %s' % self.get_profile_label(),
-                                  self.activeaccount)
+        self.telegram.telsendtext(f'{self.strings.getRegionalizedString(34)} {self.get_profile_label()}', self.activeaccount)
         self.telegram.telsendphoto(img_dir, self.activeaccount)
         time.sleep(4)
 
     def refresh_page(self, update_last_execute=False):
-        self.telegram.telsendtext('O bot irá atualizar a página e tentará logar novamente, aguarde!', 0)
+        self.telegram.telsendtext(self.strings.getRegionalizedString(35), 0)
         for currentWindow in self.windows:
             currentWindow['refresh_page'] = 0
             currentWindow['login'] = 0
@@ -518,8 +522,6 @@ class Bot:
             return self.defaultProfileLabel
 
     def start(self):
-        a = 0
-        aa = "a {a}"
         print(instruction)
         time.sleep(5)
         t = Configuration.c['time_intervals']
@@ -527,9 +529,10 @@ class Bot:
         if len(self.windows) >= 1:
             self.accounts = len(self.windows)
 
-            print('\n\n>>---> %d janelas com o nome Bombcrypto encontradas!' % len(self.windows))
-            self.telegram.telsendtext(
-                '🔌 Bot inicializado em %d Contas. \n\n 💰 É hora de faturar alguns BCoins!!!' % len(self.windows), 0)
+            print(f'\n\n>>---> {len(self.windows)} {self.strings.getRegionalizedString(36)}')
+            self.telegram.telsendtext(f'🔌 {self.strings.getRegionalizedString(37)} {len(self.windows)} '
+                                      f'{self.strings.getRegionalizedString(38)} \n\n 💰 '
+                                      f'{self.strings.getRegionalizedString(39)}', 0)
 
             while True:
                 for currentWindow in self.windows:
@@ -540,7 +543,7 @@ class Bot:
                     if not currentWindow['window'].isMaximized:
                         currentWindow['window'].maximize()
 
-                    print('\n\n>>---> Janela atual: %s' % currentWindow['window'].title)
+                    print(f'\n\n>>---> {self.strings.getRegionalizedString(40)} {currentWindow["window"].title}')
 
                     if self.activeaccount == self.accounts:
                         self.activeaccount = 1
@@ -561,16 +564,15 @@ class Bot:
                         currentWindow['maps'].append(now)
 
                         if ScreenControls.clickbtn(self.images['new-map']):
-                            self.telegram.telsendtext(
-                                f'Completamos mais um mapa na conta %s' % self.get_profile_label(),
-                                self.activeaccount)
+                            self.telegram.telsendtext(f'{self.strings.getRegionalizedString(41)} {self.get_profile_label()}',
+                                                      self.activeaccount)
                             loggerMapClicked()
                             time.sleep(3)
                             num_jaulas = len(ScreenControls.positions(self.images['jail'], threshold=0.8))
                             if num_jaulas > 0:
                                 self.telegram.telsendtext(
-                                    f'Parabéns temos {num_jaulas} nova(s) jaula(s) no novo mapa 🎉🎉🎉, na conta %s' %
-                                    self.get_profile_label(), self.activeaccount)
+                                    f'{self.strings.getRegionalizedString(42)} {num_jaulas} {self.strings.getRegionalizedString(43)}'
+                                    f' {self.get_profile_label()}', self.activeaccount)
 
                     if now - currentWindow['refresh_heroes'] > self.add_randomness(t['refresh_heroes_positions'] * 60):
                         currentWindow['refresh_heroes'] = now
@@ -590,4 +592,4 @@ class Bot:
                     sys.stdout.flush()
 
         else:
-            print('\n\n>>---> Nenhuma janela com o nome Bombcrypto encontrada!')
+            print(self.strings.getRegionalizedString(44))
