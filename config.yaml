@@ -63,7 +63,7 @@ time_intervals:
 
   send_screenshot: 15
 
-  refresh_page: 600
+  refresh_page: 60
 
 # Login e Senhas
 login_with_pass:
