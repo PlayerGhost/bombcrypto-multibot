@@ -85,6 +85,7 @@ class Bot:
 
             windows.append({
                 'window': window,
+                'disconnected': 0,
                 'login': 0,
                 'heroes': 0,
                 'balance': 0,
@@ -135,6 +136,9 @@ class Bot:
     def click_on_x(self):
         return ScreenControls.clickbtn(self.images['x'])
 
+    def click_on_ok(self):
+        return ScreenControls.clickbtn(self.images['ok'])
+
     def click_on_go_back(self):
         return ScreenControls.clickbtn(self.images['go-back-arrow'])
 
@@ -169,9 +173,9 @@ class Bot:
     def rest_all(self):
         logger(f'⚒️ {self.strings.getRegionalizedString(1)}', 'green')
         self.go_to_heroes()
-        time.sleep(10)
+        time.sleep(7)
         self.click_on_rest_all()
-        time.sleep(10)
+        time.sleep(7)
         self.go_to_treasure_hunt()
 
     def is_working(self, bar, buttons):
@@ -319,10 +323,10 @@ class Bot:
         empty_scrolls_attempts = Configuration.c['scroll_attempts']
 
         if Configuration.c['select_heroes_mode'] == 'all':
-            time.sleep(4)
+            time.sleep(3)
             self.send_all()
             logger(self.strings.getRegionalizedString(17))
-            time.sleep(4)
+            time.sleep(3)
         else:
             while empty_scrolls_attempts > 0:
                 self.send_heroes_to_work()
@@ -338,7 +342,7 @@ class Bot:
 
     def go_to_treasure_hunt(self):
         self.click_on_x()
-        time.sleep(4)
+        time.sleep(3)
         self.click_on_treasure_hunt()
 
     def refresh_heroes_positions(self, update_last_execute=False):
@@ -351,7 +355,7 @@ class Bot:
 
         logger(f'🔃 {self.strings.getRegionalizedString(20)}')
         self.click_on_go_back()
-        time.sleep(2)
+        time.sleep(3)
         self.click_on_treasure_hunt()
 
     # login
@@ -371,44 +375,44 @@ class Bot:
             pyautogui.hotkey('ctrl', 'f5')
             return
 
-        if ScreenControls.clickbtn(self.images['connect-wallet'], timeout=10):
+        if ScreenControls.clickbtn(self.images['ok'], timeout=5):
+            pass
+
+        if ScreenControls.clickbtn(self.images['connect-wallet'], timeout=12):
             logger(f'🎉 {self.strings.getRegionalizedString(24)}')
             self.login_attempts = self.login_attempts + 1
-        time.sleep(5)
+        time.sleep(4)
 
         # Login activated
         l = Configuration.c['login_with_pass']
         if l["activated"] == True:
-            if ScreenControls.clickbtn(self.images['type-username'], timeout=10):
+            if ScreenControls.clickbtn(self.images['type-username'], timeout=5):
                 ScreenControls.inputtype(l["accounts"][self.activeaccount]["username"])
                 logger(f'⌨ {self.strings.getRegionalizedString(25)}')
 
-            if ScreenControls.clickbtn(self.images['type-password'], timeout=10):
+            if ScreenControls.clickbtn(self.images['type-password'], timeout=5):
                 ScreenControls.inputtype(l["accounts"][self.activeaccount]["password"])
                 logger(f'⌨ {self.strings.getRegionalizedString(26)}')
 
-            if ScreenControls.clickbtn(self.images['connect-login'], timeout=10):
+            if ScreenControls.clickbtn(self.images['connect-login'], timeout=5):
                 logger(f'👌 {self.strings.getRegionalizedString(27)}')
                 self.login_attempts = self.login_attempts + 1
                 time.sleep(2)
         else:
-            if ScreenControls.clickbtn(self.images['connect-metamask'], timeout=10):
+            if ScreenControls.clickbtn(self.images['connect-metamask'], timeout=5):
                 logger(f'👌 {self.strings.getRegionalizedString(28)}')
                 self.login_attempts = self.login_attempts + 1
-                time.sleep(10)
+                time.sleep(7)
 
-        if ScreenControls.clickbtn(self.images['select-wallet-2'], timeout=8):
+        if ScreenControls.clickbtn(self.images['select-wallet-2'], timeout=4):
             self.login_attempts = self.login_attempts + 1
-            time.sleep(15)
+            time.sleep(10)
 
             self.search_for_workable_heroes()
             if self.click_on_treasure_hunt(timeout=15):
                 self.login_attempts = 0
             return
         else:
-            pass
-
-        if ScreenControls.clickbtn(self.images['ok'], timeout=5):
             pass
 
     def go_balance(self, update_last_execute=False, curwind=''):
@@ -429,7 +433,7 @@ class Bot:
                 break
             i = i - 1
             coins_pos = ScreenControls.positions(self.images['coin-icon'], threshold=Configuration.threshold['default'])
-            time.sleep(5)
+            time.sleep(4)
 
         if len(coins_pos) == 0:
             logger(self.strings.getRegionalizedString(31))
@@ -446,13 +450,13 @@ class Bot:
         print(f'r = {left}, {top}, {width}, {height}')
         img_dir = os.path.dirname(os.path.realpath(__file__)) + r'\targets\saldo1.png'
         myscreen.save(img_dir)
-        time.sleep(4)
+        time.sleep(3)
 
         enviar = f'{self.strings.getRegionalizedString(32)} {self.get_profile_label()}'
         self.telegram.telsendtext(enviar, self.activeaccount)
         self.telegram.telsendphoto(img_dir, self.activeaccount)
         self.click_on_x()
-        time.sleep(4)
+        time.sleep(3)
 
     def send_screenshot(self, update_last_execute=False):
         if update_last_execute:
@@ -465,10 +469,10 @@ class Bot:
         myscreen = pyautogui.screenshot()
         img_dir = os.path.dirname(os.path.realpath(__file__)) + r'\targets\allscreens.png'
         myscreen.save(img_dir)
-        time.sleep(4)
+        time.sleep(3)
         self.telegram.telsendtext(f'{self.strings.getRegionalizedString(34)} {self.get_profile_label()}', self.activeaccount)
         self.telegram.telsendphoto(img_dir, self.activeaccount)
-        time.sleep(4)
+        time.sleep(3)
 
     def refresh_page(self, update_last_execute=False):
         self.telegram.telsendtext(self.strings.getRegionalizedString(35), 0)
@@ -477,7 +481,7 @@ class Bot:
             currentWindow['login'] = 0
             currentWindow['window'].activate()
             pyautogui.hotkey('ctrl', 'f5')
-            time.sleep(15)
+            time.sleep(10)
 
     def send_executions_infos(self):
         for currentWindow in self.windows:
@@ -523,7 +527,7 @@ class Bot:
 
     def start(self):
         print(instruction)
-        time.sleep(5)
+        time.sleep(2)
         t = Configuration.c['time_intervals']
 
         if len(self.windows) >= 1:
@@ -576,7 +580,7 @@ class Bot:
 
                     if now - currentWindow['refresh_heroes'] > self.add_randomness(t['refresh_heroes_positions'] * 60):
                         currentWindow['refresh_heroes'] = now
-                        time.sleep(2)
+                        time.sleep(4)
                         self.refresh_heroes_positions()
 
                     if now - currentWindow['balance'] > self.add_randomness(t['get_balance'] * 60):
