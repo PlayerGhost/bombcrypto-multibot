@@ -49,7 +49,7 @@ class Telegram:
                             self.secondaryBots.append(self.criar_bot_telegram(aux['token']))
 
                 self.telsendtext('''
-        /start Iniciar Bot
+        Bot Iniciado, aguarde enquanto analizo as contas! 🥷💣💥💰
         ''', 0)
                 print('>>---> Notificações no Telegram habilitadas.\n')
             else:
