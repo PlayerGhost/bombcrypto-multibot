@@ -5,34 +5,36 @@ language: "pt"
 # Nome dos perfis de cada conta
 # Os valores devem ser crescentes de 1 até o número total das suas contas
 accountLabels:
-  1: "Conta 1"
-  2: "Conta 2"
-  3: "Conta 3"
+  1: "Nome da primeira conta"
+  2: "Nome da segunda conta"
+  3: "Nome da terceira conta"
+  # Se precisar adicionar mais contas é só colocar o 4: "nome da conta" e assim por diante. Lembre-se de não remover as aspas.
 
 # Configurações de conexão para Telegram
 telegram:
-  active: False
-  tokenMain: ""
-  chatidMain: ""
+  active: True
+  tokenMain: "Token API do seu bot"
+  chatidMain: "Chat Id do dono do bot"
 
   # Multi Telegrams
   # Os valores devem ser crescentes de 1 até o número total das suas contas
   # Inclua o token e chatid de cada conta do jeito que está neste exemplo
   # Informe quais Telelegrams receberão as informações dos seus respectivos perfis
+  # Exemplo, se você colocar [1, 3] no profilesToSendMessage então o bot irá enviar print da conta 1 e conta 3 para o chat Id correspondente.
   # Ativado = True, Desativado = False, se quiser que envie mensagem para mais de um Telegram
-  activate: False
+  activate: True
   secondaryInfos:
     1:
-      token: ""
-      chatid: ""
-      profilesToSendMessage: [1, 2, 3, 4]
+      token: "Token API do seu bot"
+      chatid: "Chat Id do dono da conta"
+      profilesToSendMessage: [1, 2, 3]
     2:
-      token: ""
-      chatid: ""
+      token: "Token API do seu bot"
+      chatid: "Chat Id do dono da conta"
       profilesToSendMessage: []
     3:
-      token: ""
-      chatid: ""
+      token: "Token API do seu bot"
+      chatid: "Chat Id do dono da conta"
       profilesToSendMessage: []
 
 # Configurações de intervalos de tempo
@@ -41,17 +43,17 @@ time_intervals:
   # Valor padrão (em minutos): 10
   send_heroes_for_work: 10
 
-  # Intervalo de tempo para atualizar a posição dos heróis no mapa
-  # Valor padrão (em minutos): 3
-  refresh_heroes_positions: 10
+  # Intervalo de tempo para verificar o login e atualizar a posição dos heróis no mapa
+  # Valor padrão (em minutos): 5
+  # refresh_heroes = True (Bot irá atualizar a posição dos heróis no mapa no tempo definido)
+  # refresh_heroes = False (Bot não irá atualizar posição dos heróis, últil caso você envie os heróis para o trabalho em pouco tempo
+  # então não precisa atualizar a posição dos heróis toda hora)
+  refresh_heroes: True
+  check_login_and_refresh_heroes: 5
 
   # Intervalo de tempo para verificar por novos mapas
   # Valor padrão (em segundos): 5
   check_for_new_map_button: 5
-
-  # Intervalo de tempo para verificar se existe solicitação de ‘login’
-  # Valor padrão (em minutos): 5
-  check_for_login: 5
 
   # Intervalo de tempo entre movimentos
   # Valor padrão (em segundos): 1
@@ -61,29 +63,34 @@ time_intervals:
   # Valor padrão (em minutos): 60
   get_balance: 60
 
-  send_screenshot: 15
+  # Intervalo de tempo para enviar print da tela para o telegram.
+  # Valor padrão (em minutos): 30 minutos
+  send_screenshot: 60
 
-  refresh_page: 60
+  # Intervalo de tempo para recarregar sozinho a página
+  # Valor padrão (em minutos): 600 minutos (10 Horas)
+  refresh_page: 600
 
 # Login e Senhas
 login_with_pass:
   # Ativar conexão via login e senha
   # Valor padrão: False
-  activated: False
+  activated: True
 
   # Multiaccounts
   # Os valores devem ser crescentes de 1 até o número total das sua conta
   # Inclua o usuário e senha de cada conta do jeito que está neste exemplo
   accounts:
     1:
-      username: "username"
-      password: "your_password"
+      username: "Usuário da primeira conta"
+      password: "Senha da primeira conta"
     2:
-      username: "another_username"
-      password: "another_password"
+      username: "Usuário da segunda conta"
+      password: "Senha da segunda conta"
     3:
-      username: "last_username"
-      password: "last_password"
+      username: "Usuário da terceira conta"
+      password: "Senha da terceira conta"
+  # Se precisar adicionar mais contas é só copiar a estrutura e colocar o número 4 antes e assim por diante. Lembre-se de não remover as aspas.
 
 # O quão confiante o Bot. precisa estar para clicar nos botões (valores entre 0 e 1. Onde 0 é o valor mínimo, 1 é o valor máximo)
 threshold:
@@ -111,8 +118,8 @@ threshold:
   # Valor padrão: 0.8
   select_wallet_buttons: 0.8
 
-  # Valor padrão: 0.7
-  go_to_work_btn: 0.7
+  # Valor padrão: 0.85
+  go_to_work_btn: 0.85
 
   # Valor padrão: 0.9
   green_bar: 0.9
@@ -128,14 +135,14 @@ home:
 # Valor padrão: 60
 scroll_size: 60
 
-# Valor padrão: 5
-scroll_attempts: 5
+# Valor padrão: 4
+scroll_attempts: 4
 
 # Valor padrão: true
 use_click_and_drag_instead_of_scroll: true
 
-# Valor padrão: 200
-click_and_drag_amount: 200
+# Valor padrão: 290
+click_and_drag_amount: 290
 
 # Valor padrão: green
 # all = utiliza o comando enviar todos

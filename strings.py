@@ -47,7 +47,10 @@ class Strings:
                       'Completamos mais um mapa na conta',
                       'Parabéns temos',
                       'nova(s) jaula(s) no novo mapa 🎉🎉🎉, na conta',
-                      '\n\n>>---> Nenhuma janela com o nome Bombcrypto encontrada!']
+                      '\n\n>>---> Nenhuma janela com o nome Bombcrypto encontrada!',
+                      'verificando se o jogo desconectou',
+                      'Jogo desconectado, tentando reconectar!',
+                      'jogo ainda conectado, passando para a próxima conta!']
 
             stringEN = []
 
