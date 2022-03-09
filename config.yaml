@@ -69,7 +69,7 @@ time_intervals:
 
   # Intervalo de tempo para recarregar sozinho a página
   # Valor padrão (em minutos): 600 minutos (10 Horas)
-  refresh_page: 600
+  refresh_page: 60
 
 # Login e Senhas
 login_with_pass:
