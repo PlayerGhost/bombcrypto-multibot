@@ -1,27 +1,33 @@
----
-# language = "pt" / "en"
+# Idioma do Bot = "pt" / "en"
+# language of Bot = "pt" / "en"
 language: "pt"
 
 # Nome dos perfis de cada conta
 # Os valores devem ser crescentes de 1 até o número total das suas contas
 accountLabels:
+  accountLabels:
   1: "Nome da primeira conta"
   2: "Nome da segunda conta"
   3: "Nome da terceira conta"
   # Se precisar adicionar mais contas é só colocar o 4: "nome da conta" e assim por diante. Lembre-se de não remover as aspas.
 
-# Configurações de conexão para Telegram
+# Configurações do Bot Telegram//Telegram Bot settings.
+# Token Main = API Token do bot no telegram//Token API of Telegram Bot.
+# Chat Id = O id do chat do dono do bot//The chat id of the ownner of the bot.
 telegram:
   active: False
   tokenMain: "Token API do seu bot"
   chatidMain: "Chat Id do dono do bot"
 
   # Multi Telegrams
-  # Os valores devem ser crescentes de 1 até o número total das suas contas
-  # Inclua o token e chatid de cada conta do jeito que está neste exemplo
-  # Informe quais Telelegrams receberão as informações dos seus respectivos perfis
+  # Aumente conforme o número de contas que você quer que o bot envie mensagem no telegram
+  # Increase the value according the numbers of accounts you want to send messages with telegram bot.
+  # Inclua o token API do bot e chatid de cada conta do jeito que está neste exemplo//Type the API Token of telegram bot and the chat id like this sample.
+  # Informe quais Telelegrams receberão as informações dos seus respectivos perfis.
   # Exemplo, se você colocar [1, 3] no profilesToSendMessage então o bot irá enviar print da conta 1 e conta 3 para o chat Id correspondente.
-  # Ativado = True, Desativado = False, se quiser que envie mensagem para mais de um Telegram
+  # Inform wich telegrams will receive the infos of the respectives accounts.
+  # Sample, if you put [1, 3] in profilesToSendMessage so the bot will send the print of account 1 and account 3 acording the chat Id.
+  # Ativado = True, Desativado = False // Enabled = true, Disabled = False
   activate: False
   secondaryInfos:
     1:
@@ -37,50 +43,52 @@ telegram:
       chatid: "Chat Id do dono da conta"
       profilesToSendMessage: []
 
-# Configurações de intervalos de tempo
+# Configurações de intervalos de tempo//Time intervals settings.
 time_intervals:
-  # Intervalo de tempo para verificar se há heróis disponíveis para trabalhar
-  # Valor padrão (em minutos): 10
+  # Intervalo de tempo para verificar se há heróis disponíveis para trabalhar//Time interval to verify and send heroes for work.
+  # Padrão//Default (em minutos//in minutes): 10
   send_heroes_for_work: 10
 
   # Intervalo de tempo para verificar o login e atualizar a posição dos heróis no mapa
-  # Valor padrão (em minutos): 5
-  # refresh_heroes = True (Bot irá atualizar a posição dos heróis no mapa no tempo definido)
-  # refresh_heroes = False (Bot não irá atualizar posição dos heróis, últil caso você envie os heróis para o trabalho em pouco tempo
-  # então não precisa atualizar a posição dos heróis toda hora)
+  # Padrão//Default (em minutos//in minutes): 5
+  # refresh_heroes = True (Bot irá atualizar a posição dos heróis no mapa no tempo definido//refresh heroes enabled)
+  # refresh_heroes = False (Bot não irá atualizar posição dos heróis//refresh heroes disabled)
+  # Últil caso você envie os heróis para o trabalho em pouco tempo então não precisa atualizar a posição dos heróis toda hora.
+  # Userful in case you send heroes for work in a small time interval, so you don't need to refresh heroes again.
   refresh_heroes: True
   check_login_and_refresh_heroes: 5
 
-  # Intervalo de tempo para verificar por novos mapas
-  # Valor padrão (em segundos): 5
+  # Intervalo de tempo para verificar por novos mapas//Time interval to verify new map button.
+  # Padrão//Default (em segundos//in seconds): 5
   check_for_new_map_button: 5
 
-  # Intervalo de tempo entre movimentos
-  # Valor padrão (em segundos): 1
+  # Intervalo de tempo entre movimentos//Time interval between movements.
+  # Padrão//Default (em segundos//in seconds): 1
   interval_between_movements: 1
 
-  # Intervalo de tempo para verificar se o saldo aumentou
-  # Valor padrão (em minutos): 60
+  # Intervalo de tempo para verificar saldo em BCOIN e enviar para o telegram//Time interval to verify BCOIN ballance and send to telegram bot.
+  # Padrão//Default (em minutos//in minutes): 60
   get_balance: 60
 
-  # Intervalo de tempo para enviar print da tela para o telegram.
-  # Valor padrão (em minutos): 30 minutos
-  send_screenshot: 60
+  # Intervalo de tempo para enviar print da tela para o telegram.//Time interval to send a print to telegram bot.
+  # Padrão//Default (em minutos//in minutes): 30 minutos
+  send_screenshot: 30
 
-  # Intervalo de tempo para recarregar sozinho a página
-  # Valor padrão (em minutos): 600 minutos (10 Horas)
+  # Intervalo de tempo para recarregar sozinho a página//Time interval to reload the page.
+  # Padrão//Default (em minutos//in minutes): 600 min (10 Horas//Hours)
   refresh_page: 60
 
-# Login e Senhas
+# Login e Senhas//Login and pass feature.
 login_with_pass:
-  # Ativar conexão via login e senha
-  # Valor padrão: False
+  # Ativar conexão via login e senha//Enable connection with user and pass
+  # Padrão//Default: False
   activated: False
 
   # Multiaccounts
-  # Os valores devem ser crescentes de 1 até o número total das sua conta
-  # Inclua o usuário e senha de cada conta do jeito que está neste exemplo
+  # Os valores devem ser crescentes de 1 até o número total das sua conta//Increase the value according the numbers of accounts you have.
+  # Inclua o usuário e senha de cada conta do jeito que está neste exemplo//Includes user and pass off all accounts like this sample.
   accounts:
+    accounts:
     1:
       username: "Usuário da primeira conta"
       password: "Senha da primeira conta"
@@ -90,67 +98,70 @@ login_with_pass:
     3:
       username: "Usuário da terceira conta"
       password: "Senha da terceira conta"
-  # Se precisar adicionar mais contas é só copiar a estrutura e colocar o número 4 antes e assim por diante. Lembre-se de não remover as aspas.
 
-# O quão confiante o Bot. precisa estar para clicar nos botões (valores entre 0 e 1. Onde 0 é o valor mínimo, 1 é o valor máximo)
+# O quão confiante o bot precisa estar para clicar nos botões. (valores entre 0 e 1. Onde 0 é o valor mínimo, 1 é o valor máximo)
+# How confident the bot need to be to click in a button. (Values between 0 and 1. When 0 is the min value and 1 is the max value)
 threshold:
-  # Valor padrão: 0.7
+  # Padrão//Default: 0.7
   default: 0.7
 
-  # Valor padrão: 0.8
+  # Padrão//Default: 0.8
   common: 0.8
 
-  # Valor padrão: 0.8
+  # Padrão//Default: 0.8
   rare: 0.8
 
-  # Valor padrão: 0.8
+  # Padrão//Default: 0.8
   super_rare: 0.8
 
-  # Valor padrão: 0.8
+  # Padrão//Default: 0.8
   epic: 0.8
 
-  # Valor padrão: 0.8
+  # Padrão//Default: 0.8
   legend: 0.8
 
-  # Valor padrão: 0.8
+  # Padrão//Default: 0.8
   super_legend: 0.8
 
-  # Valor padrão: 0.8
+  # Padrão//Default: 0.8
   select_wallet_buttons: 0.8
 
-  # Valor padrão: 0.85
+  # Padrão//Default: 0.85
   go_to_work_btn: 0.85
 
-  # Valor padrão: 0.9
+  # Padrão//Default: 0.9
   green_bar: 0.9
 
-# Configurações do modo casa
+# Configurações do modo casa//Send home feature configuration
 home:
   enable: False
-  # Se o bot está enviando o hero errado para a home, aumente esse número.
-  # Se o bot não está enviando o hero, diminua esse número.
+  # Se o bot está enviando o hero errado para a home, aumente esse número.//If the bot send the wrong hero to home, increase this value.
+  # Se o bot não está enviando o hero, diminua esse número.//If the bot is not sending hero to home, decrease the value.
   hero_threshold: 0.8
   home_button_threshold: 0.9
 
-# Valor padrão: 60
+# Tamanho do scroll//How long will be the scroll
+# Padrão//Default: 60
 scroll_size: 60
 
-# Valor padrão: 4
+# Quantas vezes o bot vai fazer o scroll//how many the bot will make a scroll
+# Padrão//Default: 4
 scroll_attempts: 4
 
-# Valor padrão: true
-use_click_and_drag_instead_of_scroll: true
+# Padrão//Default: true
+use_click_and_drag_instead_of_scroll: True
 
-# Valor padrão: 290
+# O quão longe o bot vai arrastar o mouse // How many the bot will move the mouse
+# Padrão/Default: 290
 click_and_drag_amount: 290
 
-# Valor padrão: green
-# all = utiliza o comando enviar todos
-# green = seleciona os heróis com a barra de stamina verde (metade ou cheia)
-# full = seleciona somente os heróis com a barra de stamina cheia
+# Padrão//Default: green
+# all = Envia todos os heróis para trabalhar // send all heroes for work
+# green = seleciona os heróis com a barra de stamina verde (metade ou cheia) // select only green bar heroes (half or full)
+# full = seleciona somente os heróis com a barra de stamina cheia // select only full bar heroes
 select_heroes_mode: "green"
 
-# Opção para salvar os logs em arquivo (logs.txt)
-# Valor padrão: False
-# Opções disponíveis: False ou True
+# Opção para salvar os logs em arquivo // Option to save logs in a file 
+# Padrão//Default: False
+# Opções//Options: False or True
 save_log_to_file: True
