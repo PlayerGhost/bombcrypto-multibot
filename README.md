@@ -90,3 +90,6 @@ Apenas execute o arquivo IniciarBOT
 
 ## Curtiu? Faça sua doação... Wallet BEP20
 ### 0xe8dB3a73A24ba73131d1Dc7d5667198E5Af586a3
+
+## Suporte
+### [Telegram Grupo Oficial](https://t.me/+xTFFNhbK3SsxYTJh)

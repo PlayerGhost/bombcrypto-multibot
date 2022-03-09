@@ -1,9 +1,10 @@
-import time
 from urllib.request import urlopen
 from io import BytesIO
 from zipfile import ZipFile
 import os
 import shutil
+from ruamel.yaml import YAML
+from ruamel.yaml import CommentedMap
 
 ZIP_REPOSITORY_MAIN_URL = 'https://github.com/PlayerGhost/bombcrypto-multibot/archive/refs/heads/main.zip'
 
@@ -22,7 +23,7 @@ def unzipto(extract_to, file_bytes=None):
     zipFile.extractall(path=extract_to)
 
 
-def main():
+if __name__ == '__main__':
     try:
         os.mkdir("download")
 
@@ -30,7 +31,28 @@ def main():
         unzipto(extract_to=EXTRACT_TO, file_bytes=zip_content_bytes)
 
         print('Fazendo backup das configurações...')
-        shutil.copy("config.yaml", "./download/bombcrypto-multibot-main/config.yaml")
+
+        yaml = YAML()
+        yaml.preserve_quotes = True
+        yaml.boolean_representation = ['False', 'True']
+
+        with open('./config.yaml', encoding='utf-8') as open_ymlBackup, \
+                open('./download/bombcrypto-multibot-main/config.yaml', encoding='utf-8') as open_ymlCurrent:
+            yamlBackup = yaml.load(open_ymlBackup)
+            yamlCurrent = yaml.load(open_ymlCurrent)
+
+        with open('./download/bombcrypto-multibot-main/config.yaml', 'w', encoding='utf-8') as open_yml:
+            for i in yamlCurrent:
+                if type(yamlCurrent[i]) is CommentedMap:
+                    if i in yamlBackup:
+                        for j in yamlCurrent[i]:
+                            if j in yamlBackup[i]:
+                                yamlCurrent[i][j] = yamlBackup[i][j]
+                else:
+                    if i in yamlBackup:
+                        yamlCurrent[i] = yamlBackup[i]
+
+            yaml.dump(yamlCurrent, open_yml)
 
         print('Atualizando arquivos...')
 
@@ -62,6 +84,3 @@ def main():
         print('A atualização do bot apresentou problemas...')
         print('Erro: %s' % (str(e)))
     input('Pressione Enter para continuar...')
-
-
-main()

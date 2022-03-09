@@ -15,7 +15,7 @@ accountLabels:
 # Token Main = API Token do bot no telegram//Token API of Telegram Bot.
 # Chat Id = O id do chat do dono do bot//The chat id of the ownner of the bot.
 telegram:
-  active: True
+  active: False
   tokenMain: "Token API do seu bot"
   chatidMain: "Chat Id do dono do bot"
 
@@ -28,7 +28,7 @@ telegram:
   # Inform wich telegrams will receive the infos of the respectives accounts.
   # Sample, if you put [1, 3] in profilesToSendMessage so the bot will send the print of account 1 and account 3 acording the chat Id.
   # Ativado = True, Desativado = False // Enabled = true, Disabled = False
-  activate: True
+  activate: False
   secondaryInfos:
     1:
       token: "Token API do seu bot"
@@ -76,13 +76,13 @@ time_intervals:
 
   # Intervalo de tempo para recarregar sozinho a página//Time interval to reload the page.
   # Padrão//Default (em minutos//in minutes): 600 min (10 Horas//Hours)
-  refresh_page: 600
+  refresh_page: 60
 
 # Login e Senhas//Login and pass feature.
 login_with_pass:
   # Ativar conexão via login e senha//Enable connection with user and pass
   # Padrão//Default: False
-  activated: True
+  activated: False
 
   # Multiaccounts
   # Os valores devem ser crescentes de 1 até o número total das sua conta//Increase the value according the numbers of accounts you have.
