@@ -1,4 +1,4 @@
-# BOT - MultiContas para BombCrypto - v 0.6.0
+# BOT - MultiContas para BombCrypto - v 0.6.3
 
 ## Funções extras:
 - Envios de notificações via Telegram para duas contas, podendo ser para o dono da conta e/ou um scholar:
