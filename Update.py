@@ -42,14 +42,14 @@ if __name__ == '__main__':
             yamlCurrent = yaml.load(open_ymlCurrent)
 
         with open('./download/bombcrypto-multibot-main/config.yaml', 'w', encoding='utf-8') as open_yml:
-            for i in yamlCurrent:
-                if type(yamlCurrent[i]) is CommentedMap:
-                    if i in yamlBackup:
-                        for j in yamlCurrent[i]:
-                            if j in yamlBackup[i]:
-                                yamlCurrent[i][j] = yamlBackup[i][j]
+
+
+            for i in yamlBackup:
+                if type(yamlBackup[i]) is CommentedMap:
+                    for j in yamlBackup[i]:
+                        yamlCurrent[i][j] = yamlBackup[i][j]
                 else:
-                    if i in yamlBackup:
+                    if i in yamlCurrent:
                         yamlCurrent[i] = yamlBackup[i]
 
             yaml.dump(yamlCurrent, open_yml)
