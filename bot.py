@@ -1,3 +1,4 @@
+from socket import timeout
 import time
 import sys
 import os
@@ -298,6 +299,7 @@ class Bot:
     def go_to_heroes(self):
         if self.click_on_go_back():
             self.login_attempts = 0
+            self.disconnect()
 
         time.sleep(3)
         self.click_on_heroes()
@@ -380,59 +382,95 @@ class Bot:
             time.sleep(3)
             pass
 
-        if ScreenControls.clickbtn(self.images['connect-wallet'], timeout=20):
+        if ScreenControls.clickbtn(self.images['connect-wallet'], timeout=12):
             logger(f'🎉 {self.strings.getRegionalizedString(24)}')
             self.login_attempts = self.login_attempts + 1
             time.sleep(5)
 
-        # Login activated
-        l = Configuration.c['login_with_pass']
-        if l["activated"] == True:
-            if ScreenControls.clickbtn(self.images['type-username'], timeout=5):
-                ScreenControls.inputtype(l["accounts"][self.activeaccount]["username"])
-                logger(f'⌨ {self.strings.getRegionalizedString(25)}')
+            # Login activated
+            l = Configuration.c['login_with_pass']
+            if l["activated"] == True:
+                if ScreenControls.clickbtn(self.images['type-username'], timeout=5):
+                    ScreenControls.inputtype(l["accounts"][self.activeaccount]["username"])
+                    logger(f'⌨ {self.strings.getRegionalizedString(25)}')
 
-            if ScreenControls.clickbtn(self.images['type-password'], timeout=5):
-                ScreenControls.inputtype(l["accounts"][self.activeaccount]["password"])
-                logger(f'⌨ {self.strings.getRegionalizedString(26)}')
+                if ScreenControls.clickbtn(self.images['type-password'], timeout=5):
+                    ScreenControls.inputtype(l["accounts"][self.activeaccount]["password"])
+                    logger(f'⌨ {self.strings.getRegionalizedString(26)}')
 
-            if ScreenControls.clickbtn(self.images['connect-login'], timeout=5):
-                logger(f'👌 {self.strings.getRegionalizedString(27)}')
-                self.login_attempts = self.login_attempts + 1
-                time.sleep(5)
-
-                if self.click_on_treasure_hunt(timeout=6):
-                    self.login_attempts = 0
-                return
-            else:
-                pass
-
-        else:
-            if ScreenControls.clickbtn(self.images['connect-metamask'], timeout=6):
-                logger(f'👌 {self.strings.getRegionalizedString(28)}')
-                self.login_attempts = self.login_attempts + 1
-                time.sleep(5)
-
-                if ScreenControls.clickbtn(self.images['select-wallet-2'], timeout=6):
+                if ScreenControls.clickbtn(self.images['connect-login'], timeout=5):
+                    logger(f'👌 {self.strings.getRegionalizedString(27)}')
                     self.login_attempts = self.login_attempts + 1
                     time.sleep(5)
 
                     if self.click_on_treasure_hunt(timeout=6):
                         self.login_attempts = 0
                     return
+                else:
+                    pass
+
             else:
-                pass
+                if ScreenControls.clickbtn(self.images['connect-metamask'], timeout=6):
+                    logger(f'👌 {self.strings.getRegionalizedString(28)}')
+                    self.login_attempts = self.login_attempts + 1
+                    time.sleep(5)
+
+                    if ScreenControls.clickbtn(self.images['select-wallet-2'], timeout=6):
+                        self.login_attempts = self.login_attempts + 1
+                        time.sleep(5)
+
+                        if self.click_on_treasure_hunt(timeout=6):
+                            self.login_attempts = 0
+                        return
+                else:
+                    pass
 
     def disconnect(self):
         logger(f'{self.strings.getRegionalizedString(45)}')
         time.sleep(6)
-        if ScreenControls.clickbtn(self.images['ok'], timeout=3) or ScreenControls.clickbtn(self.images['connect-wallet'], timeout=3):
-            logger(f'{self.strings.getRegionalizedString(46)}')
-            self.login()
-            time.sleep(5)
-            self.click_on_treasure_hunt(timeout = 3)
-            self.login_attempts = 0
+        if ScreenControls.clickbtn(self.images['ok'], timeout=5):
             time.sleep(3)
+            pass
+
+        if ScreenControls.clickbtn(self.images['connect-wallet'], timeout=12):
+            logger(f'{self.strings.getRegionalizedString(46)}')
+            # Login activated
+            l = Configuration.c['login_with_pass']
+            if l["activated"] == True:
+                if ScreenControls.clickbtn(self.images['type-username'], timeout=5):
+                    ScreenControls.inputtype(l["accounts"][self.activeaccount]["username"])
+                    logger(f'⌨ {self.strings.getRegionalizedString(25)}')
+
+                if ScreenControls.clickbtn(self.images['type-password'], timeout=5):
+                    ScreenControls.inputtype(l["accounts"][self.activeaccount]["password"])
+                    logger(f'⌨ {self.strings.getRegionalizedString(26)}')
+
+                if ScreenControls.clickbtn(self.images['connect-login'], timeout=5):
+                    logger(f'👌 {self.strings.getRegionalizedString(27)}')
+                    self.login_attempts = self.login_attempts + 1
+                    time.sleep(5)
+
+                    if self.click_on_treasure_hunt(timeout=6):
+                        self.login_attempts = 0
+                    return
+                else:
+                    pass
+
+            else:
+                if ScreenControls.clickbtn(self.images['connect-metamask'], timeout=6):
+                    logger(f'👌 {self.strings.getRegionalizedString(28)}')
+                    self.login_attempts = self.login_attempts + 1
+                    time.sleep(5)
+
+                    if ScreenControls.clickbtn(self.images['select-wallet-2'], timeout=6):
+                        self.login_attempts = self.login_attempts + 1
+                        time.sleep(5)
+
+                        if self.click_on_treasure_hunt(timeout=6):
+                            self.login_attempts = 0
+                        return
+                else:
+                    pass
         else:
             logger(f'{self.strings.getRegionalizedString(47)}')
             pass
