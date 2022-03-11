@@ -376,52 +376,65 @@ class Bot:
             pyautogui.hotkey('ctrl', 'f5')
             return
 
-        if ScreenControls.clickbtn(self.images['ok'], timeout=3):
+        if ScreenControls.clickbtn(self.images['ok'], timeout=5):
+            time.sleep(3)
             pass
 
-        if ScreenControls.clickbtn(self.images['connect-wallet'], timeout=12):
+        if ScreenControls.clickbtn(self.images['connect-wallet'], timeout=20):
             logger(f'🎉 {self.strings.getRegionalizedString(24)}')
             self.login_attempts = self.login_attempts + 1
-            time.sleep(3)
+            time.sleep(5)
 
-            # Login activated
-            l = Configuration.c['login_with_pass']
-            if l["activated"] == True:
-                if ScreenControls.clickbtn(self.images['type-username'], timeout=4):
-                    ScreenControls.inputtype(l["accounts"][self.activeaccount]["username"])
-                    logger(f'⌨ {self.strings.getRegionalizedString(25)}')
+        # Login activated
+        l = Configuration.c['login_with_pass']
+        if l["activated"] == True:
+            if ScreenControls.clickbtn(self.images['type-username'], timeout=5):
+                ScreenControls.inputtype(l["accounts"][self.activeaccount]["username"])
+                logger(f'⌨ {self.strings.getRegionalizedString(25)}')
 
-                if ScreenControls.clickbtn(self.images['type-password'], timeout=4):
-                    ScreenControls.inputtype(l["accounts"][self.activeaccount]["password"])
-                    logger(f'⌨ {self.strings.getRegionalizedString(26)}')
+            if ScreenControls.clickbtn(self.images['type-password'], timeout=5):
+                ScreenControls.inputtype(l["accounts"][self.activeaccount]["password"])
+                logger(f'⌨ {self.strings.getRegionalizedString(26)}')
 
-                if ScreenControls.clickbtn(self.images['connect-login'], timeout=5):
-                    logger(f'👌 {self.strings.getRegionalizedString(27)}')
-                    self.login_attempts = self.login_attempts + 1
-                    time.sleep(2)
-
-                    if self.click_on_treasure_hunt(timeout=5):
-                        self.login_attempts = 0
-                    return
-                else:
-                    pass
-
-            else:
-                if ScreenControls.clickbtn(self.images['connect-metamask'], timeout=5):
-                    logger(f'👌 {self.strings.getRegionalizedString(28)}')
-                    self.login_attempts = self.login_attempts + 1
-                    time.sleep(4)
-
-            if ScreenControls.clickbtn(self.images['select-wallet-2'], timeout=4):
+            if ScreenControls.clickbtn(self.images['connect-login'], timeout=5):
+                logger(f'👌 {self.strings.getRegionalizedString(27)}')
                 self.login_attempts = self.login_attempts + 1
                 time.sleep(5)
 
-                if self.click_on_treasure_hunt(timeout=5):
+                if self.click_on_treasure_hunt(timeout=6):
                     self.login_attempts = 0
                 return
             else:
                 pass
+
         else:
+            if ScreenControls.clickbtn(self.images['connect-metamask'], timeout=6):
+                logger(f'👌 {self.strings.getRegionalizedString(28)}')
+                self.login_attempts = self.login_attempts + 1
+                time.sleep(5)
+
+                if ScreenControls.clickbtn(self.images['select-wallet-2'], timeout=6):
+                    self.login_attempts = self.login_attempts + 1
+                    time.sleep(5)
+
+                    if self.click_on_treasure_hunt(timeout=6):
+                        self.login_attempts = 0
+                    return
+            else:
+                pass
+
+    def disconnect(self):
+        logger(f'{self.strings.getRegionalizedString(45)}')
+        time.sleep(6)
+        if ScreenControls.clickbtn(self.images['ok'], timeout=3) or ScreenControls.clickbtn(self.images['connect-wallet'], timeout=3):
+            logger(f'{self.strings.getRegionalizedString(46)}')
+            self.login()
+            time.sleep(5)
+            self.click_on_treasure_hunt(timeout = 3)
+            self.login_attempts = 0
+            time.sleep(3)
+        else:
+            logger(f'{self.strings.getRegionalizedString(47)}')
             pass
 
     def go_balance(self, update_last_execute=False, curwind=''):
@@ -460,7 +473,7 @@ class Bot:
         myscreen.save(img_dir)
         time.sleep(3)
 
-        enviar = f'{self.strings.getRegionalizedString(32)} {self.get_profile_label()}'
+        enviar = f'{self.strings.getRegionalizedString(32)} {self.get_profile_label()} 🚀🚀🚀'
         self.telegram.telsendtext(enviar, self.activeaccount)
         self.telegram.telsendphoto(img_dir, self.activeaccount)
         self.click_on_x()
@@ -473,6 +486,9 @@ class Bot:
                 currentWindow['send_screenshot'] = 0
 
             return
+
+        if self.click_on_treasure_hunt(timeout = 3):
+            pass
 
         myscreen = pyautogui.screenshot()
         img_dir = os.path.dirname(os.path.realpath(__file__)) + r'\targets\allscreens.png'
@@ -601,16 +617,8 @@ class Bot:
 
                     sys.stdout.flush()
 
-                    logger(f'{self.strings.getRegionalizedString(45)}')
-                    time.sleep(15)
-                    if ScreenControls.clickbtn(self.images['ok'], timeout=3):
-                        logger(f'{self.strings.getRegionalizedString(46)}')
-                        self.login()
-                        time.sleep(5)
-                        self.click_on_treasure_hunt
-                    else:
-                        logger(f'{self.strings.getRegionalizedString(47)}')
-                        pass
+                    if not now - currentWindow['login']:
+                        self.disconnect()
 
         else:
             print(self.strings.getRegionalizedString(44))
