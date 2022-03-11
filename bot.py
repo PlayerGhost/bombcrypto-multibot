@@ -376,47 +376,48 @@ class Bot:
             pyautogui.hotkey('ctrl', 'f5')
             return
 
-        if ScreenControls.clickbtn(self.images['ok'], timeout=3):
+        if ScreenControls.clickbtn(self.images['ok'], timeout=5):
+            time.sleep(3)
             pass
 
-        if ScreenControls.clickbtn(self.images['connect-wallet'], timeout=12):
+        if ScreenControls.clickbtn(self.images['connect-wallet'], timeout=20):
             logger(f'🎉 {self.strings.getRegionalizedString(24)}')
             self.login_attempts = self.login_attempts + 1
-            time.sleep(3)
+            time.sleep(5)
 
         # Login activated
         l = Configuration.c['login_with_pass']
         if l["activated"] == True:
-            if ScreenControls.clickbtn(self.images['type-username'], timeout=4):
+            if ScreenControls.clickbtn(self.images['type-username'], timeout=5):
                 ScreenControls.inputtype(l["accounts"][self.activeaccount]["username"])
                 logger(f'⌨ {self.strings.getRegionalizedString(25)}')
 
-            if ScreenControls.clickbtn(self.images['type-password'], timeout=4):
+            if ScreenControls.clickbtn(self.images['type-password'], timeout=5):
                 ScreenControls.inputtype(l["accounts"][self.activeaccount]["password"])
                 logger(f'⌨ {self.strings.getRegionalizedString(26)}')
 
             if ScreenControls.clickbtn(self.images['connect-login'], timeout=5):
                 logger(f'👌 {self.strings.getRegionalizedString(27)}')
                 self.login_attempts = self.login_attempts + 1
-                time.sleep(4)
+                time.sleep(5)
 
-                if self.click_on_treasure_hunt(timeout=5):
+                if self.click_on_treasure_hunt(timeout=6):
                     self.login_attempts = 0
                 return
             else:
                 pass
 
         else:
-            if ScreenControls.clickbtn(self.images['connect-metamask'], timeout=5):
+            if ScreenControls.clickbtn(self.images['connect-metamask'], timeout=6):
                 logger(f'👌 {self.strings.getRegionalizedString(28)}')
                 self.login_attempts = self.login_attempts + 1
-                time.sleep(4)
+                time.sleep(5)
 
                 if ScreenControls.clickbtn(self.images['select-wallet-2'], timeout=6):
                     self.login_attempts = self.login_attempts + 1
                     time.sleep(5)
 
-                    if self.click_on_treasure_hunt(timeout=5):
+                    if self.click_on_treasure_hunt(timeout=6):
                         self.login_attempts = 0
                     return
             else:
@@ -431,6 +432,7 @@ class Bot:
             time.sleep(5)
             self.click_on_treasure_hunt(timeout = 3)
             self.login_attempts = 0
+            time.sleep(3)
         else:
             logger(f'{self.strings.getRegionalizedString(47)}')
             pass
