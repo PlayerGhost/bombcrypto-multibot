@@ -50,7 +50,7 @@ class Strings:
                       '\n\n>>---> Nenhuma janela com o nome Bombcrypto encontrada!',
                       'verificando se o jogo desconectou',
                       'Jogo desconectado, tentando reconectar!',
-                      'jogo ainda conectado, passando para a próxima conta!']
+                      'jogo ainda conectado, prosseguindo a próxima ação!']
 
             stringEN = ['Heroes who should be sent home loaded.',
                         'Putting the heroes to sleep (you bums)',
@@ -98,7 +98,7 @@ class Strings:
                         '\n\n>>---> No window named Bombcrypto found!',
                         'checking if the game has disconnected',
                         'Game disconnected, trying to reconnect!',
-                        'game still connected, moving to next account!']
+                        'game still connected, moving next action!']
 
             if self.language == "pt":
                 return stringPT[index]
