@@ -1,0 +1,3 @@
+Taka a screenshot from the heros you want to send home, cut the image and place here in .png format (The screenshot need to be of an unique zone that are not equal to there other heros, like the skin+id).
+
+Tire um print dos heróis que deseja mandar para a casa, recorte a imagem e coloque nessa pasta com o formato .png (o print tem que ser de uma parte que não se repete nos heróis, como a skin, junto com o id).

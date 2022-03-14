@@ -71,8 +71,9 @@ class Bot:
         file_names = listdir('./targets/heroes-to-send-home')
         heroes = []
         for file in file_names:
-            path = './targets/heroes-to-send-home/' + file
-            heroes.append(cv2.imread(path))
+            if file.endswith("png"):
+                path = './targets/heroes-to-send-home/' + file
+                heroes.append(cv2.imread(path))
 
         print(f">>---> {self.strings.getRegionalizedString(0)} {len(heroes)}")
         return heroes
