@@ -602,6 +602,12 @@ class Bot:
 
                     print(f'\n\n>>---> {self.strings.getRegionalizedString(40)} {currentWindow["window"].title}')
 
+                    if now - currentWindow['refresh_page'] > self.add_randomness(t['check_for_refresh_page'] * 60):
+                        logger('🔃 Atualizando o jogo')
+                        currentWindow['refresh_page'] = now
+                        self.rest_all()
+                        self.refresh_page()
+
                     if self.activeaccount == self.accounts:
                         self.activeaccount = 1
                     else:
