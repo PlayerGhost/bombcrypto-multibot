@@ -602,7 +602,7 @@ class Bot:
 
                     print(f'\n\n>>---> {self.strings.getRegionalizedString(40)} {currentWindow["window"].title}')
 
-                    if now - currentWindow['refresh_page'] > self.add_randomness(t['check_for_refresh_page'] * 60):
+                    if now - currentWindow['refresh_page'] > self.add_randomness(t['refresh_page'] * 60):
                         logger('🔃 Atualizando o jogo')
                         currentWindow['refresh_page'] = now
                         self.rest_all()
