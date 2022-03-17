@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-    
 from bot import Bot
 
+
 def start_bot():
     bot = Bot()
+
     try:
         bot.start()
     except:
@@ -12,6 +14,7 @@ def start_bot():
             start_bot()
         except:
             start_bot()
+
 
 if __name__ == '__main__':
     start_bot()
