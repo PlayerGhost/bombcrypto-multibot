@@ -128,6 +128,9 @@ threshold:
   # Padrão//Default: 0.85
   go_to_work_btn: 0.85
 
+  # Padrão//Default: 0.85
+  rest_all_btn: 0.85
+
   # Padrão//Default: 0.9
   green_bar: 0.9
 

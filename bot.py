@@ -94,7 +94,7 @@ class Bot:
                 'new_map': 0,
                 'refresh_heroes': 0,
                 'send_screenshot': t['send_screenshot'] * 60,
-                'refresh_page': t['refresh_page'] * 60,
+                'refresh_page': time.time(),
                 'maps': []
             })
 
@@ -151,7 +151,7 @@ class Bot:
         return ScreenControls.positions(self.images['send-all'], threshold=Configuration.threshold['go_to_work_btn'])
 
     def click_on_rest_all(self):
-        return ScreenControls.positions(self.images['rest-all'], threshold=Configuration.threshold['go_to_work_btn'])
+        return ScreenControls.positions(self.images['rest-all'], threshold=Configuration.threshold['rest_all_btn'])
 
     def click_on_balance(self):
         ScreenControls.clickbtn(self.images['consultar-saldo'])
@@ -298,7 +298,7 @@ class Bot:
                 print(self.strings.getRegionalizedString(12))
 
     def go_to_heroes(self):
-        if self.click_on_go_back():
+        if not self.click_on_go_back():
             self.login_attempts = 0
             self.disconnect()
 
@@ -426,7 +426,6 @@ class Bot:
         time.sleep(6)
         if ScreenControls.clickbtn(self.images['ok'], timeout=5):
             time.sleep(3)
-            pass
 
         if ScreenControls.clickbtn(self.images['connect-wallet'], timeout=12):
             logger(f'{self.strings.getRegionalizedString(46)}')
