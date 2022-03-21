@@ -35,7 +35,7 @@ class Bot:
             self.refresh_heroes_positions,
             self.go_balance,
             self.send_screenshot,
-            self.refresh_page,
+            self.refresh_all_pages,
             self.send_executions_infos,
             self.rest_all
         )
@@ -528,10 +528,11 @@ class Bot:
         self.telegram.telsendphoto(img_dir, self.activeaccount)
         time.sleep(3)
 
-    def refresh_page(self, update_last_execute=False):
+    def refresh_all_pages(self, update_last_execute=False):
         self.telegram.telsendtext(self.strings.getRegionalizedString(35), 0)
+
         for currentWindow in self.windows:
-            currentWindow['refresh_page'] = 0
+            currentWindow['refresh_page'] = time.time()
             currentWindow['login'] = 0
             currentWindow['window'].activate()
             pyautogui.hotkey('ctrl', 'f5')
@@ -605,7 +606,7 @@ class Bot:
                         logger('🔃 Atualizando o jogo')
                         currentWindow['refresh_page'] = now
                         self.rest_all()
-                        self.refresh_page()
+                        pyautogui.hotkey('ctrl', 'f5')
 
                     if self.activeaccount == self.accounts:
                         self.activeaccount = 1
