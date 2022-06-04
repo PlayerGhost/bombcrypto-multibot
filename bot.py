@@ -160,6 +160,13 @@ class Bot:
     def click_on_balance(self):
         ScreenControls.clickbtn(self.images['consultar-saldo'])
 
+    def ativate_window(self, window):
+        try:
+            window.activate()
+        except:
+            window.minimize()
+            window.maximize()
+
     # endregion
 
     # region Painel Herói
@@ -538,7 +545,7 @@ class Bot:
         for currentWindow in self.windows:
             currentWindow['refresh_page'] = time.time()
             currentWindow['login'] = 0
-            currentWindow['window'].activate()
+            self.ativate_window(currentWindow['window'])
             pyautogui.hotkey('ctrl', 'f5')
             time.sleep(10)
 
@@ -600,7 +607,9 @@ class Bot:
                     time.sleep(2)
                     now = time.time()
                     self.defaultProfileLabel = currentWindow['window'].title
-                    currentWindow['window'].activate()
+
+                    self.ativate_window(currentWindow['window'])
+
                     if not currentWindow['window'].isMaximized:
                         currentWindow['window'].maximize()
 
