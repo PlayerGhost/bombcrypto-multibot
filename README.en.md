@@ -1,4 +1,4 @@
-# BOT - MultiAccount for BombCrypto - v 0.6.2
+# BOT - MultiAccount for BombCrypto - v 0.6.5
 
 ## Extra functions:
 - Sending notifications via Telegram:

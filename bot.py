@@ -132,8 +132,12 @@ class Bot:
     def click_on_full_bar(self):
         return ScreenControls.positions(self.images['full-stamina'], threshold=Configuration.threshold['default'])
 
-    def click_on_treasure_hunt(self, timeout=3):
-        return ScreenControls.clickbtn(self.images['treasure-hunt-icon'], timeout=timeout)
+    def click_on_game_mode(self, timeout=3):
+        if Configuration.gameMode == 'treasure':
+            return ScreenControls.clickbtn(self.images['treasure-hunt-icon'], timeout=timeout)
+
+        if Configuration.gameMode == 'amazon':
+            return ScreenControls.clickbtn(self.images['amazon-survival-icon'], timeout=timeout)
 
     def click_on_x(self):
         return ScreenControls.clickbtn(self.images['x'])
@@ -207,7 +211,7 @@ class Bot:
             pyautogui.click()
 
     def send_green_bar_heroes_to_work(self):
-        offset = 140
+        offset = 180
 
         green_bars = self.click_on_green_bar()
         logger(f'🟩 {len(green_bars)} {self.strings.getRegionalizedString(2)}')
@@ -225,7 +229,7 @@ class Bot:
 
         hero_clicks_cnt = 0
         for (x, y, w, h) in not_working_green_bars:
-            ScreenControls.movetowithrandomness(x + offset + (w / 2), y + (h / 2), 1)
+            ScreenControls.movetowithrandomness(x + offset + (w / 2), y + 10 + (h / 2), 1)
             pyautogui.click()
             self.hero_clicks = self.hero_clicks + 1
             hero_clicks_cnt = hero_clicks_cnt + 1
@@ -346,7 +350,7 @@ class Bot:
     def go_to_treasure_hunt(self):
         self.click_on_x()
         time.sleep(3)
-        self.click_on_treasure_hunt()
+        self.click_on_game_mode()
 
     def refresh_heroes_positions(self, update_last_execute=False):
         if update_last_execute:
@@ -360,7 +364,7 @@ class Bot:
             logger(f'🔃 {self.strings.getRegionalizedString(20)}')
             self.click_on_go_back()
             time.sleep(3)
-            self.click_on_treasure_hunt()
+            self.click_on_game_mode()
 
     # login
 
@@ -403,7 +407,7 @@ class Bot:
                     self.login_attempts = self.login_attempts + 1
                     time.sleep(5)
 
-                    if self.click_on_treasure_hunt(timeout=6):
+                    if self.click_on_game_mode(timeout=6):
                         self.login_attempts = 0
                     return
 
@@ -417,7 +421,7 @@ class Bot:
                         self.login_attempts = self.login_attempts + 1
                         time.sleep(5)
 
-                        if self.click_on_treasure_hunt(timeout=6):
+                        if self.click_on_game_mode(timeout=6):
                             self.login_attempts = 0
                         return
 
@@ -446,7 +450,7 @@ class Bot:
                     self.login_attempts = self.login_attempts + 1
                     time.sleep(5)
 
-                    if self.click_on_treasure_hunt(timeout=6):
+                    if self.click_on_game_mode(timeout=6):
                         self.login_attempts = 0
                     return
 
@@ -460,7 +464,7 @@ class Bot:
                         self.login_attempts = self.login_attempts + 1
                         time.sleep(5)
 
-                        if self.click_on_treasure_hunt(timeout=6):
+                        if self.click_on_game_mode(timeout=6):
                             self.login_attempts = 0
                         return
         else:
@@ -516,7 +520,7 @@ class Bot:
 
             return
 
-        if self.click_on_treasure_hunt(timeout=3):
+        if self.click_on_game_mode(timeout=3):
             pass
 
         myscreen = pyautogui.screenshot()

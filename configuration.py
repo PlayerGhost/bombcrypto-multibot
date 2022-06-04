@@ -6,6 +6,7 @@ class Configuration:
         c = yaml.safe_load(open_yml)
 
     language = c['language']
+    gameMode = c['gameMode']
     accountLabels = c['accountLabels']
     telegram = c['telegram']
     threshold = c['threshold']
