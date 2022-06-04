@@ -2,7 +2,7 @@
 # language of Bot = "pt" / "en"
 language: "pt"
 #Pode ser "treasure" ou "amazon"
-#Can ber "treasure" or "amazon"
+#Can be "treasure" or "amazon"
 gameMode: "amazon"
 
 # Nome dos perfis de cada conta
